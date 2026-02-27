@@ -1,36 +1,70 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'phosphor-react';
+import { supabase, NewsItem } from '@/lib/supabase';
 
-const highlights = [
+const defaultHighlights = [
   {
-    id: 1,
+    id: '1',
     category: 'Commercial Goods',
     title: 'General Cargo',
     excerpt: 'Packaged goods, palletized freight, and general commercial shipments transported across all seven countries in our network. Both import and export directions handled.',
-    image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800',
+    image_url: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800',
   },
   {
-    id: 2,
+    id: '2',
     category: 'Industrial',
     title: 'Heavy & Industrial Loads',
     excerpt: 'Equipment, machinery, steel, and manufacturing supplies moved safely across borders — with proper planning and coordination at every stage of the journey.',
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800',
+    image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800',
   },
   {
-    id: 3,
+    id: '3',
     category: 'Agricultural',
     title: 'Farm & Commodity Cargo',
     excerpt: 'Agricultural products, grains, and commodities transported between producer and buyer across regional trade corridors — on schedule and handled with care.',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800',
+    image_url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800',
   },
 ];
+
+type DisplayItem = {
+  id: string;
+  category: string;
+  title: string;
+  excerpt: string;
+  image_url: string;
+};
 
 export const NewsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const [items, setItems] = useState<DisplayItem[]>(defaultHighlights);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (!error && data && data.length > 0) {
+        setItems(
+          (data as NewsItem[]).map((n) => ({
+            id: n.id,
+            category: n.category,
+            title: n.title,
+            excerpt: n.excerpt,
+            image_url: n.image_url || defaultHighlights[0].image_url,
+          }))
+        );
+      }
+    };
+    fetchNews();
+  }, []);
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
@@ -41,7 +75,7 @@ export const NewsSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Cargo Types</p>
+          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Cargo Types</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
             What We Transport
           </h2>
@@ -49,7 +83,7 @@ export const NewsSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-          {highlights.map((item, index) => (
+          {items.map((item, index) => (
             <motion.article
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
@@ -59,7 +93,7 @@ export const NewsSection = () => {
             >
               <div className="h-56 overflow-hidden relative">
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.title}
                   className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                 />

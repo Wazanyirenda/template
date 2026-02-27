@@ -1,7 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { List, X, MagnifyingGlass } from 'phosphor-react';
+import { MagnifyingGlass } from 'phosphor-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const GridMenuIcon = ({ open }: { open: boolean }) => (
+  <motion.div className="relative w-8 h-8 flex items-center justify-center" aria-hidden="true">
+    <AnimatePresence mode="wait">
+      {open ? (
+        <motion.svg
+          key="close" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          initial={{ opacity: 0, rotate: -45, scale: 0.7 }} animate={{ opacity: 1, rotate: 0, scale: 1 }}
+          exit={{ opacity: 0, rotate: 45, scale: 0.7 }} transition={{ duration: 0.25 }}
+        >
+          <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+          <line x1="20" y1="4" x2="4" y2="20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
+        </motion.svg>
+      ) : (
+        <motion.svg
+          key="open" width="24" height="20" viewBox="0 0 24 20" fill="none"
+          initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.2 }}
+        >
+          <circle cx="4" cy="4" r="2.5" fill="currentColor" />
+          <circle cx="12" cy="4" r="2.5" fill="currentColor" />
+          <circle cx="20" cy="4" r="2.5" fill="currentColor" />
+          <circle cx="4" cy="16" r="2.5" fill="currentColor" />
+          <circle cx="12" cy="16" r="2.5" fill="currentColor" />
+          <circle cx="20" cy="16" r="2.5" fill="currentColor" />
+        </motion.svg>
+      )}
+    </AnimatePresence>
+  </motion.div>
+);
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -27,14 +57,20 @@ export const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? 'bg-black shadow-lg'
-          : 'bg-transparent'
+        ? 'bg-white shadow-lg'
+        : 'bg-transparent'
         }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+        <div className="flex items-center justify-between h-24 lg:h-32">
           {/* Logo */}
-          <div className="w-32 lg:w-40 h-12 lg:h-16" aria-hidden="true" />
+          <Link to="/" className="flex items-center shrink-0">
+            <img
+              src="/logo.png"
+              alt="Calm Mountain Transport Logo"
+              className={`h-20 md:h-24 lg:h-28 w-auto object-contain transition-all duration-500 ${!scrolled ? "brightness-0 invert" : ""}`}
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
@@ -42,17 +78,17 @@ export const Header = () => {
               <div key={link.label} className="relative group">
                 <Link
                   to={link.href}
-                  className="text-sm lg:text-[15px] font-medium tracking-wide font-body text-white"
+                  className={`text-sm lg:text-[15px] font-medium tracking-wide font-body transition-colors ${scrolled ? 'text-black hover:text-primary' : 'text-white hover:text-primary'}`}
                 >
                   {link.label}
                 </Link>
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${scrolled ? 'bg-black' : 'bg-white'}`}></span>
               </div>
             ))}
 
             {/* Search */}
             <button className="p-2 rounded-full transition-colors group">
-              <MagnifyingGlass className="w-5 h-5 text-white/70 group-hover:text-primary transition-colors" />
+              <MagnifyingGlass className={`w-5 h-5 transition-colors ${scrolled ? 'text-black group-hover:text-primary' : 'text-white/70 group-hover:text-white'}`} />
             </button>
 
             {/* CTA Button */}
@@ -63,15 +99,11 @@ export const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-white"
+            className={`lg:hidden p-2 ${scrolled ? 'text-black' : 'text-white'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className="w-8 h-8" weight="bold" />
-            ) : (
-              <List className="w-8 h-8" weight="bold" />
-            )}
+            <GridMenuIcon open={mobileMenuOpen} />
           </button>
         </div>
       </div>

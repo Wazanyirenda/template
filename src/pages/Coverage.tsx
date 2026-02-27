@@ -40,7 +40,7 @@ const RouteNetworkSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Network</p>
+          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Network</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
             Regional Network
           </h2>

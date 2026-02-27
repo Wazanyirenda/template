@@ -7,7 +7,9 @@ export const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="space-y-8">
-            <div className="h-20 w-40" aria-hidden="true"></div>
+            <div className="inline-block bg-white p-4 rounded-lg">
+              <img src="/logo.png" alt="Calm Mountain Transport Logo" className="w-40 h-auto object-contain" />
+            </div>
             <p className="text-gray-400 leading-relaxed text-sm">
               Calm Mountain Transport Limited provides structured cross-border cargo transportation between Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa.
             </p>

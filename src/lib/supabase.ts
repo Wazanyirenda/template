@@ -37,6 +37,8 @@ export interface CareerItem {
     type: string;
     description: string;
     requirements: string[];
+    opening_date: string;
+    closing_date: string;
     active: boolean;
     created_at: string;
     updated_at: string;
@@ -55,4 +57,13 @@ export interface FleetItem {
     sort_order: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface PageView {
+    id: string;
+    page_path: string;
+    page_title: string;
+    referrer: string | null;
+    user_agent: string | null;
+    created_at: string;
 }

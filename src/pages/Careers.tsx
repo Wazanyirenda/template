@@ -4,8 +4,18 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, MapPin, Clock, ArrowRight, TrendUp, Users } from 'phosphor-react';
+import { Briefcase, MapPin, Clock, ArrowRight, TrendUp, Users, CalendarBlank, ProhibitInset } from 'phosphor-react';
 import { supabase, CareerItem } from '@/lib/supabase';
+
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-ZM', { day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const isClosed = (closingDate: string) => {
+  if (!closingDate) return false;
+  return new Date(closingDate) < new Date();
+};
 
 const defaultJobs: CareerItem[] = [
   {
@@ -21,6 +31,8 @@ const defaultJobs: CareerItem[] = [
       'Strong leadership and team management skills',
       'Familiarity with RTSA regulations',
     ],
+    opening_date: '2026-02-01',
+    closing_date: '2026-04-30',
     active: true,
     created_at: '',
     updated_at: '',
@@ -38,6 +50,8 @@ const defaultJobs: CareerItem[] = [
       'Knowledge of ASYCUDA and ZRA procedures',
       'Experience with multiple corridor clearances',
     ],
+    opening_date: '2026-02-15',
+    closing_date: '2026-04-15',
     active: true,
     created_at: '',
     updated_at: '',
@@ -55,6 +69,8 @@ const defaultJobs: CareerItem[] = [
       'Experience handling route changes and delays',
       'Ability to manage multiple corridors simultaneously',
     ],
+    opening_date: '2026-02-20',
+    closing_date: '2026-05-20',
     active: true,
     created_at: '',
     updated_at: '',
@@ -72,6 +88,8 @@ const defaultJobs: CareerItem[] = [
       'Existing network in trade, mining, or agriculture preferred',
       'Ability to manage and grow key accounts',
     ],
+    opening_date: '2026-03-01',
+    closing_date: '2026-05-31',
     active: true,
     created_at: '',
     updated_at: '',
@@ -261,7 +279,7 @@ const Careers = () => {
                           <h3 className="text-xl font-bold font-heading text-black mb-4 uppercase leading-tight group-hover:text-secondary transition-colors">
                             {job.title}
                           </h3>
-                          <div className="flex flex-wrap gap-4 mb-5 text-xs text-gray-500">
+                          <div className="flex flex-wrap gap-4 mb-4 text-xs text-gray-500">
                             <div className="flex items-center gap-1.5">
                               <MapPin className="w-3.5 h-3.5 text-primary" weight="fill" />
                               <span>{job.location}</span>
@@ -269,6 +287,17 @@ const Careers = () => {
                             <div className="flex items-center gap-1.5">
                               <Clock className="w-3.5 h-3.5 text-primary" weight="fill" />
                               <span>{job.type}</span>
+                            </div>
+                          </div>
+                          {/* Application Dates */}
+                          <div className="flex flex-wrap gap-4 mb-5 text-xs">
+                            <div className="flex items-center gap-1.5 text-gray-500">
+                              <CalendarBlank className="w-3.5 h-3.5 text-primary" weight="fill" />
+                              <span>Opens: {formatDate(job.opening_date)}</span>
+                            </div>
+                            <div className={`flex items-center gap-1.5 ${isClosed(job.closing_date) ? 'text-red-500' : 'text-gray-500'}`}>
+                              <CalendarBlank className="w-3.5 h-3.5" weight="fill" />
+                              <span>Closes: {formatDate(job.closing_date)}</span>
                             </div>
                           </div>
                           <div className="w-10 h-0.5 bg-primary mb-5" />
@@ -284,12 +313,19 @@ const Careers = () => {
                               ))}
                             </ul>
                           </div>
-                          <Link
-                            to="/contact"
-                            className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group/link self-start"
-                          >
-                            Apply Now <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" weight="bold" />
-                          </Link>
+                          {isClosed(job.closing_date) ? (
+                            <div className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-red-500 border-b border-red-300 pb-0.5 self-start cursor-default">
+                              <ProhibitInset className="w-3.5 h-3.5" weight="bold" />
+                              Applications Closed
+                            </div>
+                          ) : (
+                            <Link
+                              to="/contact"
+                              className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group/link self-start"
+                            >
+                              Apply Now <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" weight="bold" />
+                            </Link>
+                          )}
                         </div>
                       </motion.div>
                     ))}

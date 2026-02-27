@@ -71,7 +71,7 @@ const FleetClassesSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Vehicle Classes</p>
+          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Vehicle Classes</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
             Our Fleet
           </h2>
@@ -92,7 +92,7 @@ const FleetClassesSection = () => {
             >
               <div className={`h-1 w-full ${item.accent} group-hover:h-1.5 transition-all duration-300`} />
               <div className="p-10 flex flex-col flex-grow">
-                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-3">{item.eyebrow}</p>
+                <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-3">{item.eyebrow}</p>
                 <h3 className="text-2xl font-bold font-heading text-black uppercase leading-tight mb-4">{item.category}</h3>
                 <div className="w-10 h-0.5 bg-primary mb-6" />
                 <p className="text-gray-600 text-sm font-body leading-relaxed mb-8 flex-grow">{item.description}</p>
@@ -193,7 +193,7 @@ const FleetImageSection = () => {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Maintained & Ready</p>
+        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Maintained & Ready</p>
         <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-4">
           A Fleet Built<br />for the Corridor
         </h2>

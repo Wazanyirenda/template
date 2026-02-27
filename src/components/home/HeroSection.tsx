@@ -12,10 +12,10 @@ export const HeroSection = () => {
           <p className="text-primary text-sm font-bold uppercase tracking-widest mb-5">
             Calm Mountain Transport Limited
           </p>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-6 leading-tight tracking-tight">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold font-heading text-white mb-6 leading-tight tracking-tight">
             We Transport Commercial Cargo Across Southern and Eastern Africa
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-10 max-w-3xl">
+          <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-10 max-w-3xl">
             We move goods between Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa. Commercial cargo, scheduled departures, coordinated delivery — end to end.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">

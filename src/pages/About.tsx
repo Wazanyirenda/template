@@ -38,7 +38,7 @@ const EditorialIntro = () => {
             </p>
             <div className="w-8 h-0.5 bg-primary mt-4" />
             <div className="mt-8 grid grid-cols-3 gap-4">
-              {[["10+", "Business Years"], ["100+", "Clients Served"], ["30+", "Fleet Trucks"]].map(([val, lbl]) => (
+              {[["7", "Countries"], ["Import & Export", "Both Directions"], ["Structured", "Process"]].map(([val, lbl]) => (
                 <div key={lbl}>
                   <p className="font-heading font-bold text-foreground text-2xl leading-none">{val}</p>
                   <p className="text-muted-foreground text-[10px] uppercase tracking-wider mt-1">{lbl}</p>
@@ -70,9 +70,9 @@ const MissionVisionSection = () => {
   return (
     <section ref={ref} className="grid md:grid-cols-3">
       {[
-        { icon: Target, eyebrow: "Reliable", title: "Reliable Logistics Service", bg: "bg-white", text: "We are one of the most reliable Logistics Service Providers in the region and you can count on us to deliver the best service, every time.", textColor: "text-gray-600", headColor: "text-black" },
-        { icon: Eye, eyebrow: "Dependable", title: "Dependable Freight Provider", bg: "bg-secondary", text: "With more than 10 years experience in the freight business, you can surely depend on us for all your freight needs at all times.", textColor: "text-white/70", headColor: "text-white" },
-        { icon: Trophy, eyebrow: "Dedicated", title: "Dedicated Team of Staff", bg: "bg-white", text: "Our dedicated team of staff are key assets to our company. They do their job at the best of their ability to make sure you get the best experience when doing business with us.", textColor: "text-gray-600", headColor: "text-black" },
+        { icon: Target, eyebrow: "Reliable", title: "Reliable Logistics Service", bg: "bg-white", text: "We are a logistics partner built for reliability. You can count on us to deliver structured, on-time service every time.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
+        { icon: Eye, eyebrow: "Dependable", title: "Dependable Freight Provider", bg: "bg-secondary", text: "We bring structured logistics and clear communication to cross-border freight. You can depend on us for reliable, on-time service across Southern and Eastern Africa.", textColor: "text-white/70", headColor: "text-white", labelColor: "text-primary" },
+        { icon: Trophy, eyebrow: "Dedicated", title: "Dedicated Team of Staff", bg: "bg-white", text: "Our dedicated team of staff are key assets to our company. They do their job at the best of their ability to make sure you get the best experience when doing business with us.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
       ].map((item, i) => (
         <motion.div
           key={item.title}
@@ -81,7 +81,7 @@ const MissionVisionSection = () => {
           transition={{ duration: 0.6, delay: i * 0.1 }}
           className={`${item.bg} px-12 py-20`}
         >
-          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">{item.eyebrow}</p>
+          <p className={`${item.labelColor} font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5`}>{item.eyebrow}</p>
           <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mb-6">
             <item.icon className="w-5 h-5 text-primary" weight="fill" />
           </div>
@@ -115,7 +115,7 @@ const ApproachSection = () => {
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <p className="font-heading font-bold text-2xl text-black leading-none">7+</p>
+          <p className="font-heading font-bold text-2xl text-black leading-none">7</p>
           <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Countries Served</p>
         </motion.div>
         <div className="absolute bottom-4 left-6 flex gap-2">
@@ -129,7 +129,7 @@ const ApproachSection = () => {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Our Approach</p>
+        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Our Approach</p>
         <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-4">
           Cross-Border Transport<br />That Works
         </h2>
