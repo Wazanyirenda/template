@@ -2,100 +2,100 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Buildings, Factory, Bank } from 'phosphor-react';
+import { ArrowRight } from 'phosphor-react';
 
-const projects = [
+const highlights = [
   {
     id: 1,
-    category: 'Hospitality',
-    title: 'Chacha Park and Kingfisher Lodge',
-    excerpt:
-      'Foundational projects including construction and renovation works for Chacha Park Lodge and Kingfisher Lodge, establishing our reputation for quality.',
-    year: '2009-2011',
-    icon: Buildings,
+    category: 'Commercial Goods',
+    title: 'General Cargo',
+    excerpt: 'Packaged goods, palletized freight, and general commercial shipments transported across all seven countries in our network. Both import and export directions handled.',
+    image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800',
   },
   {
     id: 2,
     category: 'Industrial',
-    title: 'Zambia Sugar and Modern Press',
-    excerpt:
-      'Long-term engagements providing industrial support and infrastructure development for major industrial players.',
-    year: '2009-2012',
-    icon: Factory,
+    title: 'Heavy & Industrial Loads',
+    excerpt: 'Equipment, machinery, steel, and manufacturing supplies moved safely across borders — with proper planning and coordination at every stage of the journey.',
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800',
   },
   {
     id: 3,
-    category: 'Government',
-    title: 'Ministry of Science and Technology',
-    excerpt:
-      'Service delivery and infrastructure support for government institutions, ensuring compliance and quality standards.',
-    year: '2010',
-    icon: Bank,
+    category: 'Agricultural',
+    title: 'Farm & Commodity Cargo',
+    excerpt: 'Agricultural products, grains, and commodities transported between producer and buyer across regional trade corridors — on schedule and handled with care.',
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800',
   },
 ];
 
 export const NewsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section ref={ref} className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-24 md:py-32 bg-white">
+      <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-4">
-            Our Track Record
+          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Cargo Types</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
+            What We Transport
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Over a decade of delivering reliable, high-quality services across Zambia.
-          </p>
+          <div className="w-14 h-0.5 bg-primary mt-6" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((item, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+          {highlights.map((item, index) => (
             <motion.article
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-border/50"
+              className="bg-white group overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
             >
-              <div className="h-48 bg-muted flex items-center justify-center">
-                 <item.icon className="w-16 h-16 text-secondary/50" />
+              <div className="h-56 overflow-hidden relative">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1.5 bg-primary text-black text-[10px] font-heading font-bold uppercase tracking-widest shadow">
+                    {item.category}
+                  </span>
+                </div>
               </div>
-              <div className="p-6">
-                <span className="text-xs font-semibold uppercase tracking-wider text-secondary">
-                  {item.category}
-                </span>
-                <h3 className="text-lg font-bold text-navy mt-2 mb-3">
+              <div className="p-8 flex flex-col flex-grow">
+                <div className="w-8 h-0.5 bg-primary mb-4" />
+                <h3 className="text-base font-bold font-heading text-black mb-3 uppercase leading-tight group-hover:text-secondary transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                <p className="text-muted-foreground text-xs mb-6 leading-relaxed font-body flex-grow">
                   {item.excerpt}
                 </p>
-                <div className="flex items-center justify-between">
-                  <Link
-                    to="/projects"
-                    className="text-secondary font-medium text-sm hover:underline inline-flex items-center gap-1"
-                  >
-                    View Projects
-                    <ArrowRight className="w-3 h-3" />
-                  </Link>
-                  <span className="text-xs text-muted-foreground">{item.year}</span>
-                </div>
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-1.5 text-[10px] font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group/link self-start"
+                >
+                  View Services
+                  <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" weight="bold" />
+                </Link>
               </div>
             </motion.article>
           ))}
         </div>
-        
+
         <div className="mt-12 text-center">
-            <Link to="/projects" className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90">
-                View All Projects <ArrowRight className="w-4 h-4" />
-            </Link>
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] bg-black text-white px-8 py-3.5 hover:bg-secondary transition-all duration-300"
+          >
+            View All Services <ArrowRight className="w-3.5 h-3.5" weight="bold" />
+          </Link>
         </div>
       </div>
     </section>

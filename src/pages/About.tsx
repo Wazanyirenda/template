@@ -3,206 +3,270 @@ import { Footer } from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { CheckCircle, Target, Eye, Trophy } from "phosphor-react";
+import { CheckCircle, Target, Eye, Trophy, Star, ChatCircle, ArrowRight } from 'phosphor-react';
 import { Link } from 'react-router-dom';
 
 const values = [
-    {
-        title: "Client Focus",
-        description: "We prioritize our clients and strive to provide them with the best possible solutions and service, tailored to their specific needs."
-    },
-    {
-        title: "Communication",
-        description: "We believe in clear and open communication with clients, ensuring that they are kept informed at every stage of a project or transaction."
-    },
-    {
-        title: "Excellence",
-        description: "We maintain high standards of quality and performance in all aspects of our business operations, from project delivery to customer service."
-    },
-    {
-        title: "Integrity",
-        description: "We conduct ourselves with honesty, transparency, and accountability in all our dealings with clients, partners, and stakeholders."
-    },
-    {
-        title: "Innovation",
-        description: "We continuously seek new and innovative ways to improve our products, services, and processes, and stay ahead of the curve."
-    },
-    {
-        title: "Collaboration",
-        description: "We foster a culture of teamwork and collaboration, working closely with clients, partners, and colleagues to achieve shared goals."
-    }
+  { icon: CheckCircle, title: "Reliability", description: "Commitments are honored. If we agree to a delivery date, we work backwards from that date to make sure we meet it." },
+  { icon: ChatCircle, title: "Accountability", description: "We take full responsibility for the journey — from the moment cargo is collected to the moment it is delivered and signed for." },
+  { icon: Star, title: "Safety", description: "Cargo integrity and responsible transport practices are non-negotiable. We handle every shipment as if it were our own." },
+  { icon: CheckCircle, title: "Clarity", description: "We communicate clearly. No confusion, no chasing for updates. You will always know where your cargo stands." },
+  { icon: Trophy, title: "Professionalism", description: "We represent our clients' interests at every stage — with drivers, at borders, and at the point of delivery." },
+  { icon: Eye, title: "Transparency", description: "Clear pricing, honest timelines, and open communication. No hidden charges. No surprises." },
 ];
 
-const SectionObserver = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
-    return (
+const useSectionInView = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  return { ref, isInView };
+};
+
+const EditorialIntro = () => {
+  const { ref, isInView } = useSectionInView();
+  return (
+    <section ref={ref} className="py-16 bg-card border-b border-border">
+      <div className="container mx-auto px-4 md:px-8">
+        <div className="grid md:grid-cols-3 gap-10 items-start">
+          <motion.div
+            className="md:col-span-1"
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="font-heading font-bold text-foreground text-xs uppercase tracking-[0.25em] leading-relaxed">
+              Calm Mountain<br />Transport<br />Limited
+            </p>
+            <div className="w-8 h-0.5 bg-primary mt-4" />
+            <div className="mt-8 grid grid-cols-3 gap-4">
+              {[["10+", "Business Years"], ["100+", "Clients Served"], ["30+", "Fleet Trucks"]].map(([val, lbl]) => (
+                <div key={lbl}>
+                  <p className="font-heading font-bold text-foreground text-2xl leading-none">{val}</p>
+                  <p className="text-muted-foreground text-[10px] uppercase tracking-wider mt-1">{lbl}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div
+            className="md:col-span-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-2xl">
+              Calm Mountain Transport Limited was established to solve a specific problem: businesses in Southern and Eastern Africa need a transport partner they can actually rely on — one that plans ahead, communicates clearly, and delivers on time.
+            </p>
+            <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-2xl mt-4">
+              We specialise in cross-border commercial cargo transport, customs clearance, freight forwarding, and inland haulage. By focusing on doing these services well, we give our clients consistent performance they can build their supply chains around.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const MissionVisionSection = () => {
+  const { ref, isInView } = useSectionInView();
+  return (
+    <section ref={ref} className="grid md:grid-cols-3">
+      {[
+        { icon: Target, eyebrow: "Reliable", title: "Reliable Logistics Service", bg: "bg-white", text: "We are one of the most reliable Logistics Service Providers in the region and you can count on us to deliver the best service, every time.", textColor: "text-gray-600", headColor: "text-black" },
+        { icon: Eye, eyebrow: "Dependable", title: "Dependable Freight Provider", bg: "bg-secondary", text: "With more than 10 years experience in the freight business, you can surely depend on us for all your freight needs at all times.", textColor: "text-white/70", headColor: "text-white" },
+        { icon: Trophy, eyebrow: "Dedicated", title: "Dedicated Team of Staff", bg: "bg-white", text: "Our dedicated team of staff are key assets to our company. They do their job at the best of their ability to make sure you get the best experience when doing business with us.", textColor: "text-gray-600", headColor: "text-black" },
+      ].map((item, i) => (
         <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            className={className}
+          key={item.title}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: i * 0.1 }}
+          className={`${item.bg} px-12 py-20`}
         >
-            {children}
+          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">{item.eyebrow}</p>
+          <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mb-6">
+            <item.icon className="w-5 h-5 text-primary" weight="fill" />
+          </div>
+          <h3 className={`text-2xl font-bold font-heading uppercase leading-tight mb-4 ${item.headColor}`}>{item.title}</h3>
+          <div className="w-10 h-0.5 bg-primary mb-6" />
+          <p className={`text-sm leading-relaxed font-body ${item.textColor}`}>{item.text}</p>
         </motion.div>
-    );
+      ))}
+    </section>
+  );
+};
+
+const ApproachSection = () => {
+  const { ref, isInView } = useSectionInView();
+  return (
+    <section ref={ref} className="grid lg:grid-cols-[5fr_6fr] bg-muted/30 overflow-hidden">
+      <motion.div
+        className="h-[450px] lg:h-auto overflow-hidden relative"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8 }}
+      >
+        <img
+          src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=900"
+          alt="Our transport approach"
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+        />
+        <motion.div
+          className="absolute bottom-8 right-0 bg-primary px-8 py-5 shadow-2xl"
+          initial={{ opacity: 0, x: 20 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <p className="font-heading font-bold text-2xl text-black leading-none">7+</p>
+          <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Countries Served</p>
+        </motion.div>
+        <div className="absolute bottom-4 left-6 flex gap-2">
+          <span className="w-2.5 h-2.5 bg-primary block" />
+          <span className="w-2.5 h-2.5 bg-secondary block" />
+        </div>
+      </motion.div>
+      <motion.div
+        className="flex flex-col justify-center px-10 py-24 md:px-16"
+        initial={{ opacity: 0, x: 40 }}
+        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.7, delay: 0.1 }}
+      >
+        <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Our Approach</p>
+        <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-4">
+          Cross-Border Transport<br />That Works
+        </h2>
+        <div className="w-14 h-0.5 bg-primary mb-8" />
+        <div className="space-y-4 text-gray-600 text-sm leading-relaxed font-body mb-10">
+          <p>Every shipment we handle goes through the same structured process — route planning, scheduled departure, coordinated border crossing, and confirmed delivery.</p>
+          <p>We do not improvise. We plan, we communicate, and we execute. That consistency is what our clients come back for.</p>
+        </div>
+        <Link
+          to="/services"
+          className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group self-start"
+        >
+          See How It Works <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" weight="bold" />
+        </Link>
+      </motion.div>
+    </section>
+  );
+};
+
+const CoreValuesSection = () => {
+  const { ref, isInView } = useSectionInView();
+  return (
+    <section ref={ref} className="py-24 md:py-32 bg-black">
+      <div className="container mx-auto px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">What We Stand For</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-white uppercase leading-tight">Our Core Values</h2>
+          <div className="w-14 h-0.5 bg-primary mt-6" />
+        </motion.div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
+          {values.map((value, i) => (
+            <motion.div
+              key={value.title + i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
+              className="bg-black p-10 flex flex-col group hover:bg-white/5 transition-colors"
+            >
+              <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                <value.icon className="w-5 h-5 text-primary" weight="fill" />
+              </div>
+              <h3 className="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">{value.title}</h3>
+              <p className="text-white/50 text-xs leading-relaxed font-body flex-grow">{value.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const AboutCTA = () => {
+  const { ref, isInView } = useSectionInView();
+  return (
+    <section ref={ref} className="flex flex-col lg:flex-row">
+      <motion.div
+        className="lg:w-3/5 px-10 py-24 md:px-20 flex flex-col justify-center bg-primary"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.7 }}
+      >
+        <p className="font-heading font-bold text-xs uppercase tracking-[0.3em] text-black/50 mb-6">Work With Us</p>
+        <h2 className="text-4xl md:text-5xl font-bold font-heading text-black uppercase leading-tight mb-6">
+          Ready to<br />Work With Us?
+        </h2>
+        <p className="text-black/70 text-sm font-body mb-10 max-w-md leading-relaxed">
+          Let's talk about your cargo requirements. We'll come back to you with a clear, structured transport proposal.
+        </p>
+        <Link
+          to="/contact"
+          className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border border-black px-8 py-3.5 hover:bg-black hover:text-primary transition-all duration-300 self-start"
+        >
+          Get in Touch <ArrowRight className="w-3.5 h-3.5" weight="bold" />
+        </Link>
+      </motion.div>
+      <motion.div
+        className="lg:w-2/5 h-64 lg:h-auto overflow-hidden bg-secondary relative"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.15 }}
+      >
+        <img
+          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=900"
+          alt="About"
+          className="w-full h-full object-cover opacity-25"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Target className="w-32 h-32 text-white/10" weight="fill" />
+        </div>
+      </motion.div>
+    </section>
+  );
 };
 
 const About = () => {
-    return (
-        <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">
-                {/* Hero Section - Full width image */}
-                <section className="relative h-[60vh] min-h-[400px] bg-black overflow-hidden">
-                    <img
-                        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop"
-                        alt="About Veatiger"
-                        className="w-full h-full object-cover opacity-60"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-                    <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
-                        <div className="container mx-auto px-4">
-                            <motion.div
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8 }}
-                            >
-                                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-heading text-white uppercase tracking-tight mb-4">About Us</h1>
-                                <div className="w-24 h-1 bg-primary"></div>
-                            </motion.div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Pull Quote */}
-                <section className="py-20 md:py-28 bg-white">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="max-w-5xl mx-auto text-center">
-                            <p className="text-2xl md:text-4xl font-light text-black leading-relaxed italic">
-                                "Choose Veatiger General Dealers Limited and experience the peace of mind that comes with expert knowledge, meticulous attention to detail, and a commitment to delivering results."
-                            </p>
-                        </SectionObserver>
-                    </div>
-                </section>
-
-                {/* Mission / Vision / Heritage */}
-                <section className="py-24 bg-muted/30">
-                    <div className="container mx-auto px-4">
-                        <div className="grid md:grid-cols-3 gap-0">
-                            {[
-                                {
-                                    icon: Target,
-                                    title: "Our Mission",
-                                    text: "To provide innovative and cost-effective solutions, high quality products, and reliable construction management services to our customers through a commitment and a passion for what we do."
-                                },
-                                {
-                                    icon: Eye,
-                                    title: "Our Vision",
-                                    text: "To become the top choice for clients and employees seeking long term business relationships through exceptional service delivery and market leadership by 2030."
-                                },
-                                {
-                                    icon: Trophy,
-                                    title: "Our Heritage",
-                                    text: "Founded in 2012, VEATIGER has evolved into a leader in construction and infrastructure, offering world-class services nationally and internationally."
-                                }
-                            ].map((item, index) => (
-                                <SectionObserver key={item.title}>
-                                    <div className={`p-12 h-full ${index === 1 ? 'bg-secondary text-white' : 'bg-white'}`}>
-                                        <item.icon className={`w-10 h-10 mb-6 ${index === 1 ? 'text-primary' : 'text-primary'}`} />
-                                        <h3 className={`text-2xl font-bold font-heading mb-6 uppercase tracking-wider ${index === 1 ? 'text-white' : 'text-black'}`}>
-                                            {item.title}
-                                        </h3>
-                                        <p className={`leading-relaxed ${index === 1 ? 'text-white/80' : 'text-gray-600'}`}>
-                                            {item.text}
-                                        </p>
-                                    </div>
-                                </SectionObserver>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Objective Section - Text + Image */}
-                <section className="py-24 md:py-32 bg-white">
-                    <div className="container mx-auto px-4">
-                        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                            <SectionObserver>
-                                <h2 className="text-primary font-bold text-sm uppercase tracking-widest mb-3">Our Approach</h2>
-                                <h3 className="text-4xl md:text-5xl font-bold font-heading text-black mb-8 uppercase leading-tight">
-                                    INTEGRATED SOLUTIONS FOR AFRICA
-                                </h3>
-                                <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
-                                    <p>
-                                        At VEATIGER GENERAL DEALERS LIMITED, our objective is to effectively manage long-term relationships with our shareholders and customers by providing integrated distribution, product support, and logistics solutions that add value to their businesses.
-                                    </p>
-                                    <p>
-                                        We strive to develop businesses in challenging territories with high-growth prospects and sustain our competitive edge through organic and acquisitive growth.
-                                    </p>
-                                </div>
-                                <Link to="/services" className="btn-primary inline-block mt-10">
-                                    Explore Services
-                                </Link>
-                            </SectionObserver>
-                            <SectionObserver>
-                                <div className="relative overflow-hidden shadow-2xl">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop"
-                                        alt="Team at work"
-                                        className="w-full h-[500px] object-cover"
-                                    />
-                                </div>
-                            </SectionObserver>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Core Values Section - Dark background */}
-                <section className="py-24 md:py-32 bg-black">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="mb-16">
-                            <h2 className="text-4xl md:text-6xl font-bold font-heading text-white mb-4 uppercase">Our Core Values</h2>
-                            <div className="w-24 h-1 bg-primary"></div>
-                        </SectionObserver>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
-                            {values.map((value, index) => (
-                                <SectionObserver key={index}>
-                                    <div className="bg-black p-10 h-full group hover:bg-white/5 transition-colors duration-300">
-                                        <div className="flex items-start gap-4 mb-4">
-                                            <CheckCircle className="w-6 h-6 text-primary shrink-0 mt-1" weight="fill" />
-                                            <h3 className="text-xl font-bold font-heading text-white uppercase tracking-wider">{value.title}</h3>
-                                        </div>
-                                        <p className="text-gray-400 leading-relaxed pl-10">
-                                            {value.description}
-                                        </p>
-                                    </div>
-                                </SectionObserver>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA - Yellow section */}
-                <section className="py-24 bg-primary">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="max-w-3xl">
-                            <h2 className="text-4xl md:text-6xl font-bold font-heading text-black mb-6 uppercase">
-                                READY TO WORK WITH US?
-                            </h2>
-                            <p className="text-xl text-black/80 mb-10 font-light">
-                                Experience professionalism, transparency, and results-driven solutions.
-                            </p>
-                            <Link to="/contact" className="inline-block bg-black text-white hover:bg-secondary px-10 py-4 font-bold uppercase tracking-wider text-sm transition-all duration-300">
-                                Get in Touch
-                            </Link>
-                        </SectionObserver>
-                    </div>
-                </section>
-            </main>
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="min-h-screen flex flex-col min-w-0 overflow-x-hidden">
+      <Header />
+      <main className="flex-1">
+        {/* HERO */}
+        <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=2070"
+            alt="About Calm Mountain Transport"
+            className="w-full h-full object-cover opacity-35"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
+          <div className="absolute inset-0 flex items-center pt-20">
+            <div className="container mx-auto px-4 md:px-8">
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Calm Mountain Transport</p>
+                <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-heading text-white uppercase tracking-tight leading-none mb-6">
+                  About<br />Us
+                </h1>
+                <div className="w-16 h-0.5 bg-primary mb-6" />
+                <p className="text-lg text-white/70 max-w-xl font-light leading-relaxed">
+                  A cargo transport company built on one commitment: move your goods across borders, on time, every time.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+          <div className="absolute bottom-8 right-8 md:right-16 text-white/30 font-heading text-xs tracking-widest"></div>
+        </section>
+        <EditorialIntro />
+        <MissionVisionSection />
+        <ApproachSection />
+        <CoreValuesSection />
+        <AboutCTA />
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 export default About;

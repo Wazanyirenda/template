@@ -1,12 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-@font-face {
-  font-family: 'Zuume Edge';
-  src: url('./assets/fonts/ZuumeEdge-Bold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Veatiger Brand Colors */
+    /* Brand Colors */
     --background: 0 0% 100%;
     --foreground: 0 0% 0%; /* Black text */
 
@@ -28,9 +20,9 @@
     --primary: 57 91% 49%;
     --primary-foreground: 0 0% 0%; /* Black text on yellow */
 
-    /* Secondary Green #355435 */
-    --secondary: 120 23% 27%;
-    --secondary-foreground: 0 0% 100%; /* White text on green */
+    /* Secondary: Dark Grey (charcoal) */
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 100%; /* White text on grey */
 
     --muted: 60 10% 96%; /* Off-white/Cream */
     --muted-foreground: 0 0% 40%;
@@ -49,27 +41,27 @@
 
     /* Custom brand colors */
     --brand-yellow: 57 91% 49%;
-    --brand-green: 120 23% 27%;
+    --brand-grey: 0 0% 18%;
   }
 
   .dark {
-    --background: 120 23% 27%; /* Dark Green background */
+    --background: 0 0% 12%; /* Dark grey background */
     --foreground: 0 0% 98%;
 
-    --card: 120 23% 25%;
+    --card: 0 0% 15%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 120 23% 27%;
+    --popover: 0 0% 18%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 57 91% 49%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 120 23% 20%;
+    --secondary: 0 0% 25%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 120 20% 20%;
-    --muted-foreground: 120 10% 70%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
 
     --accent: 57 91% 49%;
     --accent-foreground: 0 0% 0%;
@@ -77,8 +69,8 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 120 20% 35%;
-    --input: 120 20% 35%;
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
     --ring: 57 91% 49%;
   }
 }
@@ -90,17 +82,20 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Zuume Edge', 'Oswald', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    font-family: 'IBM Plex Sans', sans-serif;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
   }
 }
 
@@ -111,16 +106,16 @@
   }
 
   .btn-outline {
-    @apply border-2 border-white text-white hover:bg-white hover:text-secondary rounded-md px-8 py-3 font-bold uppercase tracking-wide transition-all duration-300;
+    @apply border-2 border-white text-white hover:bg-white hover:text-black rounded-md px-8 py-3 font-bold uppercase tracking-wide transition-all duration-300;
   }
 
   /* Typography */
   .font-heading {
-    font-family: 'Zuume Edge', 'Oswald', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
   }
   
   .font-body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
   }
 
   /* Section Styles */
@@ -141,11 +136,11 @@
     color: hsl(var(--brand-yellow));
   }
   
-  .bg-brand-green {
-    background-color: hsl(var(--brand-green));
+  .bg-brand-grey {
+    background-color: hsl(var(--brand-grey));
   }
   
-  .text-brand-green {
-    color: hsl(var(--brand-green));
+  .text-brand-grey {
+    color: hsl(var(--brand-grey));
   }
 }

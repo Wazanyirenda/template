@@ -12,6 +12,8 @@ dist
 dist-ssr
 Demo-Fonts
 *.local
+veatiger
+SureSafetyLtd
 
 # Editor directories and files
 .vscode/*

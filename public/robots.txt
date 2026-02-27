@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://veatiger.com/sitemap.xml
+# Block the admin dashboard from search engines
+Disallow: /admin
+
+Sitemap: https://calmmt.co.zm/sitemap.xml

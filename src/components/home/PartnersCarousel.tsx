@@ -3,14 +3,14 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const partners = [
-  { name: 'MSC' },
-  { name: 'Safmarine' },
-  { name: 'Maersk' },
-  { name: 'ZESCO' },
-  { name: 'Zambia Army' },
-  { name: 'Aman Shaffan' },
-  { name: 'JAE Engineering' },
-  { name: 'IRS Cargo' },
+  { name: 'Import & Export' },
+  { name: 'Manufacturing' },
+  { name: 'Distribution' },
+  { name: 'Agriculture' },
+  { name: 'Construction' },
+  { name: 'Wholesale' },
+  { name: 'Retail Supply' },
+  { name: 'Infrastructure' },
 ];
 
 export const PartnersCarousel = () => {
@@ -26,7 +26,7 @@ export const PartnersCarousel = () => {
           transition={{ duration: 0.6 }}
           className="text-sm font-bold text-white/50 uppercase tracking-[0.3em] text-center font-heading"
         >
-          Trusted by Industry Leaders
+          Industries We Serve
         </motion.p>
       </div>
       <div className="relative">

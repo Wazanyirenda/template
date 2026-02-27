@@ -7,7 +7,8 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
-  { href: '/projects', label: 'Projects' },
+  { href: '/coverage', label: 'Coverage' },
+  { href: '/projects', label: 'Fleet' },
   { href: '/careers', label: 'Careers' },
 ];
 
@@ -25,24 +26,15 @@ export const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? 'bg-black shadow-lg'
           : 'bg-transparent'
-      }`}
+        }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src="/logo.png"
-              alt="Veatiger Logo"
-              className={`h-14 lg:h-20 w-auto object-contain transition-all duration-500 ${
-                scrolled ? 'brightness-0 invert' : ''
-              }`}
-            />
-          </Link>
+          <div className="w-32 lg:w-40 h-12 lg:h-16" aria-hidden="true" />
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
@@ -50,7 +42,7 @@ export const Header = () => {
               <div key={link.label} className="relative group">
                 <Link
                   to={link.href}
-                  className="text-base font-medium uppercase tracking-wider font-heading text-white"
+                  className="text-sm lg:text-[15px] font-medium tracking-wide font-body text-white"
                 >
                   {link.label}
                 </Link>
@@ -98,7 +90,7 @@ export const Header = () => {
                 <Link
                   key={link.label}
                   to={link.href}
-                  className="py-3 text-lg font-bold uppercase tracking-wider font-heading text-white border-b border-white/10 last:border-0"
+                  className="py-3 text-base font-medium tracking-wide font-body text-white border-b border-white/10 last:border-0"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -106,7 +98,7 @@ export const Header = () => {
               ))}
               <Link
                 to="/contact"
-                className="py-3 text-lg font-bold uppercase tracking-wider font-heading text-primary"
+                className="py-3 text-base font-medium tracking-wide font-body text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact Us

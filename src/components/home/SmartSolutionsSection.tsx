@@ -1,77 +1,65 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { CheckCircle, ShieldCheck, Users, Globe, Wrench, Briefcase } from 'phosphor-react';
+import { MapTrifold, Globe, ChatCircle, Handshake } from 'phosphor-react';
 
 const reasons = [
   {
-    title: "RISK MITIGATION",
-    description: "We understand investment risks and mitigate them through careful and prudent due diligence.",
-    icon: ShieldCheck
+    title: "Scheduled & Structured",
+    description: "We plan every shipment before it moves — route, timing, border requirements, and delivery. Nothing is left to chance.",
+    icon: MapTrifold
   },
   {
-    title: "CLIENT SATISFACTION",
-    description: "Our clients' satisfaction is our top priority. We provide high quality services that exceed expectations.",
-    icon: Users
-  },
-  {
-    title: "EXTENSIVE EXPERIENCE",
-    description: "Years of experience in the African market allow us to navigate complexities and ensure success.",
+    title: "Regional Experience",
+    description: "We know Southern and Eastern Africa. We understand border crossing realities, route conditions, and what it takes to keep cargo moving reliably.",
     icon: Globe
   },
   {
-    title: "TAILORED SOLUTIONS",
-    description: "We provide solutions tailored to meet the specific requirements and goals of each client.",
-    icon: Wrench
+    title: "Consistent Communication",
+    description: "You will know the status of your cargo. We keep clients informed at key stages — from dispatch through to delivery confirmation.",
+    icon: ChatCircle
   },
   {
-    title: "PROFESSIONALISM",
-    description: "We operate with the highest level of professionalism, transparency, honesty, and integrity.",
-    icon: Briefcase
-  },
-  {
-    title: "COMPREHENSIVE SERVICES",
-    description: "A one-stop-shop for transport, logistics, construction, and civil engineering needs.",
-    icon: CheckCircle
+    title: "Built for Business",
+    description: "We work with companies that need regular, dependable transport — not one-off trips. If you move cargo frequently, we are the right partner.",
+    icon: Handshake
   }
 ];
 
 export const SmartSolutionsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-32 bg-secondary text-white">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-24 md:py-32 bg-secondary">
+      <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-4xl mx-auto mb-20"
+          className="mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold font-heading mb-6 text-white">
-            WHY CHOOSE VEATIGER?
+          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">The Difference</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-white uppercase leading-tight">
+            Why Businesses Work With Us
           </h2>
-          <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
-          <p className="text-xl text-white/80 font-light leading-relaxed">
-            Experience the peace of mind that comes with expert knowledge, meticulous attention to detail, and a commitment to delivering results.
-          </p>
+          <div className="w-14 h-0.5 bg-primary mt-6" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10">
           {reasons.map((reason, index) => (
             <motion.div
               key={reason.title}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white/5 p-8 rounded-sm hover:bg-white/10 transition-colors border border-white/10 group"
+              className="bg-secondary p-10 flex flex-col group hover:bg-white/5 transition-colors"
             >
-              <div className="mb-6">
-                <reason.icon className="w-10 h-10 text-primary group-hover:scale-110 transition-transform duration-300" />
+              <div className="w-11 h-11 bg-primary/10 flex items-center justify-center mb-7 group-hover:bg-primary/20 transition-colors">
+                <reason.icon className="w-5 h-5 text-primary" weight="fill" />
               </div>
-              <h3 className="text-xl font-bold font-heading text-white mb-4 tracking-wide">{reason.title}</h3>
-              <p className="text-white/70 leading-relaxed">
+              <h3 className="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">{reason.title}</h3>
+              <p className="text-white/50 text-xs leading-relaxed font-body flex-grow">
                 {reason.description}
               </p>
             </motion.div>

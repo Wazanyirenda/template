@@ -1,102 +1,37 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const heroSlides = [
-  {
-    heading: 'EXPERT MINING SUPPORT',
-    subheading: "WE DELIVER RESULTS.",
-    image: "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?q=80&w=2070&auto=format&fit=crop"
-  },
-  {
-    heading: 'RELIABLE LOGISTICS',
-    subheading: "MOVING AFRICA FORWARD.",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop"
-  },
-  {
-    heading: 'CIVIL ENGINEERING',
-    subheading: "BUILDING THE FUTURE.",
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop"
-  },
-];
-
 export const HeroSection = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 z-0"
-        >
-           {/* Image */}
-          <img 
-            src={heroSlides[currentSlide].image}
-            alt={heroSlides[currentSlide].heading}
-            className="w-full h-full object-cover opacity-80"
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+    <section className="relative h-screen w-full min-w-0 overflow-hidden bg-black">
+      {/* Blank placeholder — replace with your own image */}
+      <div className="absolute inset-0 w-full h-full bg-neutral-900" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
 
       <div className="container mx-auto px-4 h-full relative z-10 flex items-center pt-20 lg:pt-24">
         <div className="max-w-4xl">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+          <p className="text-primary text-sm font-bold uppercase tracking-widest mb-5">
+            Calm Mountain Transport Limited
+          </p>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-6 leading-tight tracking-tight">
+            We Transport Commercial Cargo Across Southern and Eastern Africa
+          </h1>
+          <p className="text-xl md:text-2xl text-white/80 font-light leading-relaxed mb-10 max-w-3xl">
+            We move goods between Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa. Commercial cargo, scheduled departures, coordinated delivery — end to end.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              to="/contact"
+              className="btn-primary text-lg inline-block shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all text-center"
             >
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-heading text-white mb-4 leading-none tracking-tight">
-                {heroSlides[currentSlide].heading}
-              </h1>
-              <p className="text-2xl md:text-3xl font-light text-primary mb-10 tracking-wide uppercase font-heading">
-                {heroSlides[currentSlide].subheading}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-          >
-            <Link to="/contact" className="btn-primary text-lg inline-block shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
-              Get a Quote
+              Request a Quote
             </Link>
-          </motion.div>
-        </div>
-      </div>
-      
-      {/* Slide Indicators */}
-      <div className="absolute bottom-10 left-0 right-0 z-20">
-        <div className="container mx-auto px-4 flex gap-3">
-            {heroSlides.map((_, index) => (
-            <button
-                key={index}
-                className={`h-1 rounded-full transition-all duration-500 ${
-                index === currentSlide ? 'bg-primary w-16' : 'bg-white/30 w-8 hover:bg-white/50'
-                }`}
-                onClick={() => setCurrentSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-            />
-            ))}
+            <Link
+              to="/services"
+              className="inline-block bg-white/10 text-white hover:bg-white/20 border border-white/30 px-10 py-4 font-bold uppercase tracking-wider text-sm transition-all duration-300 text-center"
+            >
+              Our Services
+            </Link>
+          </div>
         </div>
       </div>
     </section>

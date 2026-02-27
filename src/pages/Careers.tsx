@@ -2,272 +2,352 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, MapPin, Clock, ArrowRight } from 'phosphor-react';
+import { Briefcase, MapPin, Clock, ArrowRight, TrendUp, Users } from 'phosphor-react';
+import { supabase, CareerItem } from '@/lib/supabase';
 
-const jobOpenings = [
+const defaultJobs: CareerItem[] = [
   {
-    id: 1,
-    title: 'Civil Engineer',
-    department: 'Engineering',
-    location: 'Lusaka, Zambia',
+    id: '1',
+    title: 'Fleet Operations Manager',
+    department: 'Operations',
+    location: 'Ndola, Zambia',
     type: 'Full-time',
-    description: 'We are seeking an experienced Civil Engineer to join our team. You will be responsible for designing, planning, and overseeing construction projects.',
+    description: 'Lead day-to-day fleet planning, dispatch coordination, and route performance across our cross-border transport network.',
     requirements: [
-      'Bachelor\'s degree in Civil Engineering',
-      '5+ years of experience in construction projects',
-      'Professional engineering license preferred',
-      'Strong project management skills'
-    ]
+      '5+ years in fleet or transport operations',
+      'Experience with cross-border logistics',
+      'Strong leadership and team management skills',
+      'Familiarity with RTSA regulations',
+    ],
+    active: true,
+    created_at: '',
+    updated_at: '',
   },
   {
-    id: 2,
-    title: 'Logistics Coordinator',
-    department: 'Transport and Logistics',
-    location: 'Lusaka, Zambia',
+    id: '2',
+    title: 'Customs Clearing Agent',
+    department: 'Customs & Compliance',
+    location: 'Ndola, Zambia',
     type: 'Full-time',
-    description: 'Join our logistics team to coordinate transportation operations, manage fleet schedules, and ensure timely delivery of goods across Southern Africa.',
+    description: 'Handle import and export customs documentation at major border crossings, ensuring compliant and efficient clearance for all client cargo.',
     requirements: [
-      'Degree in Logistics, Supply Chain, or related field',
-      '3+ years of logistics coordination experience',
-      'Knowledge of cross-border transportation regulations',
-      'Excellent communication and organizational skills'
-    ]
+      'ZICA or equivalent customs certification',
+      '3+ years in customs clearing',
+      'Knowledge of ASYCUDA and ZRA procedures',
+      'Experience with multiple corridor clearances',
+    ],
+    active: true,
+    created_at: '',
+    updated_at: '',
   },
   {
-    id: 3,
-    title: 'Project Manager',
-    department: 'Construction',
-    location: 'Kitwe, Zambia',
+    id: '3',
+    title: 'Transport Coordinator',
+    department: 'Dispatch',
+    location: 'Ndola, Zambia',
     type: 'Full-time',
-    description: 'Lead construction projects from planning to completion. Manage teams, budgets, timelines, and ensure quality standards are met.',
+    description: 'Coordinate pickups, cross-border schedules, driver communication, and delivery confirmations to ensure on-time performance.',
     requirements: [
-      'Bachelor\'s degree in Construction Management or related',
-      '7+ years of project management experience',
-      'PMP certification preferred',
-      'Strong leadership and problem-solving skills'
-    ]
+      '2+ years in transport or logistics coordination',
+      'Strong communication skills',
+      'Experience handling route changes and delays',
+      'Ability to manage multiple corridors simultaneously',
+    ],
+    active: true,
+    created_at: '',
+    updated_at: '',
   },
   {
-    id: 4,
-    title: 'Mining Support Specialist',
-    department: 'Mining',
-    location: 'Copperbelt, Zambia',
-    type: 'Full-time',
-    description: 'Provide technical support and supply chain solutions to mining operations. Coordinate material deliveries and maintain relationships with mining clients.',
-    requirements: [
-      'Experience in mining industry or related field',
-      'Knowledge of mining operations and safety standards',
-      'Strong relationship management skills',
-      'Ability to work in remote locations'
-    ]
-  },
-  {
-    id: 5,
-    title: 'Accountant',
-    department: 'Finance',
-    location: 'Lusaka, Zambia',
-    type: 'Full-time',
-    description: 'Manage financial records, prepare reports, and ensure compliance with accounting standards. Support financial planning and budgeting processes.',
-    requirements: [
-      'Bachelor\'s degree in Accounting or Finance',
-      'Professional accounting qualification (ACCA, CIMA, or equivalent)',
-      '3+ years of accounting experience',
-      'Proficiency in accounting software'
-    ]
-  },
-  {
-    id: 6,
-    title: 'Sales Representative',
+    id: '4',
+    title: 'Account Executive',
     department: 'Sales',
-    location: 'Lusaka, Zambia',
+    location: 'Ndola, Zambia',
     type: 'Full-time',
-    description: 'Build relationships with clients, identify business opportunities, and promote our range of services including construction, logistics, and general supply.',
+    description: 'Develop new client relationships, prepare transport proposals, and grow cargo volumes across our Southern and Eastern Africa network.',
     requirements: [
-      'Bachelor\'s degree in Business or related field',
-      '2+ years of B2B sales experience',
-      'Excellent communication and negotiation skills',
-      'Self-motivated and results-oriented'
-    ]
-  }
+      '2+ years in B2B logistics or transport sales',
+      'Strong negotiation and proposal writing skills',
+      'Existing network in trade, mining, or agriculture preferred',
+      'Ability to manage and grow key accounts',
+    ],
+    active: true,
+    created_at: '',
+    updated_at: '',
+  },
 ];
 
-const SectionObserver = ({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
+const whyWork = [
+  {
+    icon: TrendUp,
+    title: 'Growth From Day One',
+    description: 'We are a company at the start of a significant growth trajectory. Joining early means real ownership over your role and direct impact on how the business develops.',
+  },
+  {
+    icon: MapPin,
+    title: 'Work That Moves Africa',
+    description: 'Every job here directly connects businesses, supply chains, and communities across eleven countries. The work is tangible and the impact reaches far.',
+  },
+  {
+    icon: Users,
+    title: 'A Culture of Accountability',
+    description: 'We operate with clear ownership, direct communication, and mutual respect. No bureaucracy — just a professional team committed to doing the job well.',
+  },
+];
+
+const useSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  return { ref, isInView };
 };
 
 const Careers = () => {
-    return (
-        <div className="min-h-screen flex flex-col overflow-x-hidden">
-            <Header />
-            <main className="flex-1">
-                {/* Hero Section */}
-                <section className="relative h-[60vh] min-h-[400px] bg-black overflow-hidden">
-                    <img
-                        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2070&auto=format&fit=crop"
-                        alt="Careers"
-                        className="w-full h-full object-cover opacity-50"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-                    <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
-                        <div className="container mx-auto px-4">
-                            <motion.div
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8 }}
-                            >
-                                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-heading text-white uppercase tracking-tight mb-4">
-                                    Careers
-                                </h1>
-                                <div className="w-24 h-1 bg-primary mb-6"></div>
-                                <p className="text-xl text-white/80 max-w-3xl font-light">
-                                    Join our team and build your career with a company that values excellence, innovation, and growth.
-                                </p>
-                            </motion.div>
+  const [jobs, setJobs] = useState<CareerItem[]>(defaultJobs);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const { data, error } = await supabase
+        .from('careers')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        setJobs(data as CareerItem[]);
+      }
+      setLoading(false);
+    };
+    fetchJobs();
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col min-w-0 overflow-x-hidden">
+      <Header />
+      <main className="flex-1">
+
+        {/* ── HERO ── */}
+        <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
+          <motion.img
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2070"
+            alt="Careers at Calm Mountain Transport"
+            className="w-full h-full object-cover opacity-40"
+            initial={{ scale: 1.06 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.4, ease: "easeOut" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
+          <div className="absolute inset-0 flex items-center pt-20">
+            <div className="container mx-auto px-4 md:px-8">
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
+                <motion.p
+                  className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Join Our Team
+                </motion.p>
+                <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-heading text-white uppercase tracking-tight leading-none mb-6">
+                  Careers
+                </h1>
+                <motion.div
+                  className="w-16 h-0.5 bg-primary mb-6"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                  style={{ transformOrigin: 'left' }}
+                />
+                <motion.p
+                  className="text-lg text-white/70 max-w-xl font-light leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                >
+                  Build your career with a transport company that values ownership, accountability, and professional excellence.
+                </motion.p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── WHY WORK WITH US ── */}
+        {(() => {
+          const { ref, isInView } = useSection();
+          return (
+            <section ref={ref} className="py-24 md:py-32 bg-black">
+              <div className="container mx-auto px-4 md:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6 }}
+                  className="mb-16"
+                >
+                  <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Culture</p>
+                  <h2 className="text-3xl md:text-4xl font-bold font-heading text-white uppercase leading-tight">
+                    Why Work With Us
+                  </h2>
+                  <div className="w-14 h-0.5 bg-primary mt-6" />
+                </motion.div>
+                <div className="grid md:grid-cols-3 gap-px bg-white/10">
+                  {whyWork.map((item, i) => (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={isInView ? { opacity: 1, y: 0 } : {}}
+                      transition={{ duration: 0.6, delay: i * 0.1 }}
+                      className="bg-black p-12 flex flex-col group hover:bg-white/5 transition-colors cursor-default"
+                    >
+                      <div className="w-12 h-12 bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+                        <item.icon className="w-6 h-6 text-primary" weight="fill" />
+                      </div>
+                      <h3 className="font-heading font-bold text-white text-xs uppercase tracking-wider mb-4">{item.title}</h3>
+                      <p className="text-white/50 text-xs leading-relaxed font-body flex-grow group-hover:text-white/70 transition-colors">{item.description}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* ── JOB OPENINGS ── */}
+        {(() => {
+          const { ref, isInView } = useSection();
+          return (
+            <section ref={ref} className="py-24 md:py-32 bg-white">
+              <div className="container mx-auto px-4 md:px-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6 }}
+                  className="mb-16"
+                >
+                  <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Open Roles</p>
+                  <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
+                    Current Openings
+                  </h2>
+                  <div className="w-14 h-0.5 bg-primary mt-6 mb-6" />
+                  <p className="text-gray-500 text-sm max-w-2xl font-body">
+                    All positions are based in Ndola, Zambia unless otherwise stated. We are building a team of professionals who take their work seriously.
+                  </p>
+                </motion.div>
+
+                {loading ? (
+                  <div className="grid md:grid-cols-2 gap-px bg-border">
+                    {[1, 2, 3, 4].map(i => (
+                      <div key={i} className="bg-white p-10 animate-pulse">
+                        <div className="h-2 bg-gray-100 rounded w-24 mb-4" />
+                        <div className="h-5 bg-gray-200 rounded w-3/4 mb-6" />
+                        <div className="h-2 bg-gray-100 rounded w-full mb-2" />
+                        <div className="h-2 bg-gray-100 rounded w-5/6" />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid md:grid-cols-2 gap-px bg-border">
+                    {jobs.map((job, i) => (
+                      <motion.div
+                        key={job.id}
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.55, delay: i * 0.07 }}
+                        className="bg-white flex flex-col group hover:shadow-lg transition-shadow overflow-hidden"
+                      >
+                        <div className="h-0.5 w-full bg-border group-hover:bg-primary transition-colors duration-300" />
+                        <div className="p-10 flex flex-col flex-grow">
+                          <p className="text-zinc-500 font-heading font-bold text-[10px] uppercase tracking-[0.3em] mb-3">{job.department}</p>
+                          <h3 className="text-xl font-bold font-heading text-black mb-4 uppercase leading-tight group-hover:text-secondary transition-colors">
+                            {job.title}
+                          </h3>
+                          <div className="flex flex-wrap gap-4 mb-5 text-xs text-gray-500">
+                            <div className="flex items-center gap-1.5">
+                              <MapPin className="w-3.5 h-3.5 text-primary" weight="fill" />
+                              <span>{job.location}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="w-3.5 h-3.5 text-primary" weight="fill" />
+                              <span>{job.type}</span>
+                            </div>
+                          </div>
+                          <div className="w-10 h-0.5 bg-primary mb-5" />
+                          <p className="text-gray-600 text-sm mb-6 leading-relaxed font-body">{job.description}</p>
+                          <div className="mb-8 flex-grow">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-black mb-3 font-heading">Requirements</p>
+                            <ul className="space-y-2">
+                              {job.requirements.map((req, ri) => (
+                                <li key={ri} className="flex items-start gap-2.5 text-xs text-gray-600">
+                                  <span className="w-1.5 h-1.5 bg-primary block mt-1.5 shrink-0" />
+                                  <span>{req}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <Link
+                            to="/contact"
+                            className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group/link self-start"
+                          >
+                            Apply Now <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" weight="bold" />
+                          </Link>
                         </div>
-                    </div>
-                </section>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })()}
 
-                {/* Why Work With Us */}
-                <section className="py-24 md:py-32 bg-white">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="mb-16">
-                            <h2 className="text-4xl md:text-6xl font-bold font-heading text-black mb-4 uppercase">
-                                Why Work With Us
-                            </h2>
-                            <div className="w-24 h-1 bg-primary mb-8"></div>
-                        </SectionObserver>
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    icon: Briefcase,
-                                    title: 'GROWTH OPPORTUNITIES',
-                                    description: 'We invest in our employees\' professional development and provide opportunities for career advancement.'
-                                },
-                                {
-                                    icon: MapPin,
-                                    title: 'DIVERSE PROJECTS',
-                                    description: 'Work on exciting projects across mining, construction, logistics, and infrastructure development.'
-                                },
-                                {
-                                    icon: Clock,
-                                    title: 'WORK LIFE BALANCE',
-                                    description: 'We value your time and offer flexible working arrangements where possible.'
-                                }
-                            ].map((item, index) => (
-                                <SectionObserver key={item.title} delay={index * 0.1}>
-                                    <div className="p-8 bg-muted/30 hover:bg-muted/50 transition-colors duration-300">
-                                        <item.icon className="w-10 h-10 text-primary mb-6" weight="bold" />
-                                        <h3 className="text-xl font-bold font-heading text-black mb-4 uppercase tracking-wide">
-                                            {item.title}
-                                        </h3>
-                                        <p className="text-gray-600 leading-relaxed">
-                                            {item.description}
-                                        </p>
-                                    </div>
-                                </SectionObserver>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+        {/* ── CTA ── */}
+        {(() => {
+          const { ref, isInView } = useSection();
+          return (
+            <section ref={ref} className="flex flex-col lg:flex-row">
+              <motion.div
+                className="lg:w-3/5 px-10 py-24 md:px-20 flex flex-col justify-center bg-primary"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.7 }}
+              >
+                <p className="font-heading font-bold text-xs uppercase tracking-[0.3em] text-black/50 mb-6">Open Application</p>
+                <h2 className="text-4xl md:text-5xl font-bold font-heading text-black uppercase leading-tight mb-6">
+                  Don't See<br />A Match?
+                </h2>
+                <p className="text-black/70 text-sm font-body mb-10 max-w-md leading-relaxed">
+                  We are always interested in hearing from motivated professionals. Send us your details and we will reach out when a suitable position becomes available.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border border-black px-8 py-3.5 hover:bg-black hover:text-primary transition-all duration-300 self-start"
+                >
+                  Submit Your Details <ArrowRight className="w-3.5 h-3.5" weight="bold" />
+                </Link>
+              </motion.div>
+              <motion.div
+                className="lg:w-2/5 h-64 lg:h-auto overflow-hidden bg-secondary relative"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.15 }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=900"
+                  alt="Careers"
+                  className="w-full h-full object-cover opacity-20"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Briefcase className="w-32 h-32 text-white/10" weight="fill" />
+                </div>
+              </motion.div>
+            </section>
+          );
+        })()}
 
-                {/* Job Openings */}
-                <section className="py-24 md:py-32 bg-muted/30">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="mb-16">
-                            <h2 className="text-4xl md:text-6xl font-bold font-heading text-black mb-4 uppercase">
-                                Current Openings
-                            </h2>
-                            <div className="w-24 h-1 bg-primary mb-8"></div>
-                            <p className="text-lg text-gray-600 max-w-2xl">
-                                Explore our current job openings and find the perfect opportunity to advance your career.
-                            </p>
-                        </SectionObserver>
-
-                        <div className="grid md:grid-cols-2 gap-8">
-                            {jobOpenings.map((job, index) => (
-                                <SectionObserver key={job.id} delay={index * 0.1}>
-                                    <div className="bg-white p-8 border border-black/5 hover:border-primary/50 transition-all duration-300 hover:shadow-lg group">
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div>
-                                                <h3 className="text-2xl font-bold font-heading text-black mb-2 uppercase group-hover:text-secondary transition-colors">
-                                                    {job.title}
-                                                </h3>
-                                                <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                                                    {job.department}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-500">
-                                            <div className="flex items-center gap-2">
-                                                <MapPin className="w-4 h-4" weight="fill" />
-                                                <span>{job.location}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <Clock className="w-4 h-4" weight="fill" />
-                                                <span>{job.type}</span>
-                                            </div>
-                                        </div>
-                                        <p className="text-gray-600 mb-6 leading-relaxed">
-                                            {job.description}
-                                        </p>
-                                        <div className="mb-6">
-                                            <h4 className="text-sm font-bold uppercase tracking-wider text-black mb-3">Key Requirements:</h4>
-                                            <ul className="space-y-2">
-                                                {job.requirements.map((req, i) => (
-                                                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                                                        <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0"></span>
-                                                        <span>{req}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <Link
-                                            to="/contact"
-                                            className="btn-primary inline-flex items-center gap-2 text-sm group-hover:gap-3 transition-all"
-                                        >
-                                            Apply Now <ArrowRight className="w-4 h-4" weight="bold" />
-                                        </Link>
-                                    </div>
-                                </SectionObserver>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA */}
-                <section className="py-24 bg-primary">
-                    <div className="container mx-auto px-4">
-                        <SectionObserver className="max-w-3xl">
-                            <h2 className="text-4xl md:text-6xl font-bold font-heading text-black mb-6 uppercase">
-                                DON'T SEE A MATCH?
-                            </h2>
-                            <p className="text-xl text-black/80 mb-10 font-light">
-                                We're always looking for talented individuals. Send us your resume and we'll keep you in mind for future opportunities.
-                            </p>
-                            <Link to="/contact" className="inline-block bg-black text-white hover:bg-secondary px-10 py-4 font-bold uppercase tracking-wider text-sm transition-all duration-300">
-                                Submit Your Resume
-                            </Link>
-                        </SectionObserver>
-                    </div>
-                </section>
-            </main>
-            <Footer />
-        </div>
-    );
+      </main>
+      <Footer />
+    </div>
+  );
 };
 
 export default Careers;
