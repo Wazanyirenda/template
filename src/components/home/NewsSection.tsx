@@ -31,6 +31,7 @@ const defaultHighlights = [
 
 type DisplayItem = {
   id: string;
+  slug?: string | null;
   category: string;
   title: string;
   excerpt: string;
@@ -55,6 +56,7 @@ export const NewsSection = () => {
         setItems(
           (data as NewsItem[]).map((n) => ({
             id: n.id,
+            slug: n.slug,
             category: n.category,
             title: n.title,
             excerpt: n.excerpt,
@@ -112,10 +114,10 @@ export const NewsSection = () => {
                   {item.excerpt}
                 </p>
                 <Link
-                  to="/services"
+                  to={item.slug ? `/blog/${item.slug}` : (item.id.length > 20 ? `/blog/${item.id}` : '/blog')}
                   className="inline-flex items-center gap-1.5 text-[10px] font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group/link self-start"
                 >
-                  View Services
+                  Read more
                   <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" weight="bold" />
                 </Link>
               </div>
@@ -125,10 +127,10 @@ export const NewsSection = () => {
 
         <div className="mt-12 text-center">
           <Link
-            to="/services"
+            to="/blog"
             className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] bg-black text-white px-8 py-3.5 hover:bg-secondary transition-all duration-300"
           >
-            View All Services <ArrowRight className="w-3.5 h-3.5" weight="bold" />
+            View All Posts <ArrowRight className="w-3.5 h-3.5" weight="bold" />
           </Link>
         </div>
       </div>

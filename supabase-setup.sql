@@ -9,10 +9,11 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
--- ── 2. NEWS TABLE ────────────────────────────────────────────
+-- ── 2. NEWS/BLOG TABLE ──────────────────────────────────────
 CREATE TABLE IF NOT EXISTS news (
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title       TEXT NOT NULL,
+    slug        TEXT UNIQUE,
     category    TEXT NOT NULL DEFAULT 'Company News',
     excerpt     TEXT NOT NULL,
     content     TEXT,
@@ -21,6 +22,14 @@ CREATE TABLE IF NOT EXISTS news (
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Migration for existing news tables: add slug column (run if you had news before slug was added)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'news' AND column_name = 'slug') THEN
+        ALTER TABLE news ADD COLUMN slug TEXT UNIQUE;
+    END IF;
+END $$;
 
 -- Auto-update updated_at on every row change
 CREATE OR REPLACE FUNCTION update_updated_at()
@@ -169,6 +178,7 @@ CREATE POLICY "Anon delete media"
 
 -- ── 8. INDEXES (for common queries) ─────────────────────────
 CREATE INDEX IF NOT EXISTS idx_news_published    ON news (published, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_news_slug         ON news (slug) WHERE slug IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_careers_active    ON careers (active, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_fleet_active      ON fleet (active, sort_order ASC);
 CREATE INDEX IF NOT EXISTS idx_careers_dates     ON careers (opening_date, closing_date);

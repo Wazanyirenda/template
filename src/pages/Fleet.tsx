@@ -7,36 +7,6 @@ import { Link } from 'react-router-dom';
 import { Truck, ArrowRight, Wrench, ShieldCheck, NavigationArrow } from 'phosphor-react';
 import { supabase } from '@/lib/supabase';
 
-const defaultFleet: Array<{ category: string; eyebrow: string; description: string; capacity: string; body_type: string; routes: string; accent: string }> = [
-  {
-    category: "Heavy Haulage",
-    eyebrow: "30-Tonne Class",
-    description: "Our primary long-haul cross-border fleet. Fully containerized, fitted with satellite tracking, and operated by experienced drivers. Ideal for bulk commercial cargo across all corridors.",
-    capacity: "Up to 30,000 kg",
-    body_type: "Interlink / Side-tipper",
-    routes: "All cross-border corridors",
-    accent: "bg-primary",
-  },
-  {
-    category: "Medium Haulage",
-    eyebrow: "10–15 Tonne Class",
-    description: "A versatile class suited to consolidated cargo and mixed loads. Handles routes where larger trucks face access restrictions, including some inland delivery areas.",
-    capacity: "Up to 15,000 kg",
-    body_type: "Rigid flatbed / Curtainsider",
-    routes: "Regional and inland routes",
-    accent: "bg-secondary",
-  },
-  {
-    category: "Light Commercial",
-    eyebrow: "3.5–7 Tonne Class",
-    description: "Used for urgent, smaller consignments and last-mile delivery within Zambia. These units are also deployed for ad-hoc cargo requirements at short notice.",
-    capacity: "Up to 7,000 kg",
-    body_type: "Dropside / Van body",
-    routes: "Inland / Last-mile",
-    accent: "bg-primary",
-  },
-];
-
 const capabilities = [
   { icon: Truck, title: "5+ Trucks", desc: "A maintained fleet of over 5 vehicles spanning heavy haulage, medium, and light commercial classes." },
   { icon: Wrench, title: "In-House Workshop", desc: "A dedicated workshop staffed by qualified mechanics ensures fleet reliability. Road breakdowns are recovered by our own recovery vehicle." },
@@ -74,6 +44,12 @@ const FleetClassesSection = ({ fleet }: { fleet: FleetDisplayItem[] }) => {
           </p>
         </motion.div>
 
+        {fleet.length === 0 ? (
+          <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
+            <Truck className="w-12 h-12 text-gray-300 mx-auto mb-4" weight="fill" />
+            <p className="text-gray-500 font-body">No vehicle classes listed at the moment. Check back soon.</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
           {fleet.map((item, i) => (
             <motion.div
@@ -107,6 +83,7 @@ const FleetClassesSection = ({ fleet }: { fleet: FleetDisplayItem[] }) => {
             </motion.div>
           ))}
         </div>
+        )}
       </div>
     </section>
   );
@@ -250,7 +227,7 @@ const FleetCTA = () => {
 };
 
 const Fleet = () => {
-  const [fleet, setFleet] = useState<FleetDisplayItem[]>(defaultFleet);
+  const [fleet, setFleet] = useState<FleetDisplayItem[]>([]);
 
   useEffect(() => {
     const fetchFleet = async () => {
@@ -260,7 +237,7 @@ const Fleet = () => {
         .eq('active', true)
         .order('sort_order', { ascending: true });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         setFleet(data as FleetDisplayItem[]);
       }
     };

@@ -20,6 +20,7 @@ export const supabase = createClient(
 export interface NewsItem {
     id: string;
     title: string;
+    slug?: string | null;
     category: string;
     excerpt: string;
     content?: string;

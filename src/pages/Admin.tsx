@@ -6,12 +6,13 @@ import {
     Truck, Briefcase, Plus, Pencil, Trash, X, CheckCircle,
     Warning, ArrowLeft, Eye, EyeSlash, ChartBar, Users,
     ArrowRight, CaretDown, CaretUp, Globe, MapPin, House,
-    Info, Wrench, Phone, Desktop, DeviceMobile, Clock, TrendUp
+    Info, Wrench, Phone, Desktop, DeviceMobile, Clock, TrendUp,
+    Newspaper, ImageSquare
 } from 'phosphor-react';
-import { supabase, CareerItem, FleetItem, PageView } from '@/lib/supabase';
+import { supabase, CareerItem, FleetItem, PageView, NewsItem } from '@/lib/supabase';
 import { toast } from 'sonner';
 
-type Tab = 'dashboard' | 'fleet' | 'careers';
+type Tab = 'dashboard' | 'fleet' | 'careers' | 'blog';
 
 const emptyCareer = (): Omit<CareerItem, 'id' | 'created_at' | 'updated_at'> => {
     const today = new Date();
@@ -41,6 +42,19 @@ const emptyFleet = (): Omit<FleetItem, 'id' | 'created_at' | 'updated_at'> => ({
     active: true,
     sort_order: 0,
 });
+
+const emptyNews = (): Omit<NewsItem, 'id' | 'created_at' | 'updated_at'> => ({
+    title: '',
+    slug: '',
+    category: 'Company News',
+    excerpt: '',
+    content: '',
+    image_url: '',
+    published: true,
+});
+
+const slugFromTitle = (title: string) =>
+    title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 80);
 
 const inp = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors';
 const lbl = 'block text-[10px] font-heading font-bold uppercase tracking-wider text-gray-500 mb-1.5';
@@ -241,6 +255,113 @@ const FleetForm = ({
     );
 };
 
+// ── NEWS/BLOG FORM ───────────────────────────────────────────
+const NewsForm = ({
+    initial,
+    onSave,
+    onCancel,
+}: {
+    initial: Partial<NewsItem>;
+    onSave: (data: Partial<NewsItem>) => Promise<void>;
+    onCancel: () => void;
+}) => {
+    const [form, setForm] = useState({ ...emptyNews(), ...initial });
+    const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
+
+    const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const v = e.target.value;
+        setForm(p => ({ ...p, [k]: v }));
+        if (k === 'title') setForm(p => ({ ...p, slug: slugFromTitle(v) || p.slug }));
+    };
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !file.type.startsWith('image/')) {
+            toast.error('Please select an image file (JPEG, PNG, WebP).');
+            return;
+        }
+        setUploading(true);
+        const ext = file.name.split('.').pop() || 'jpg';
+        const path = `blog/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { data, error } = await supabase.storage.from('media').upload(path, file, { upsert: true });
+        if (error) {
+            toast.error(error.message || 'Failed to upload image.');
+            setUploading(false);
+            return;
+        }
+        const { data: urlData } = supabase.storage.from('media').getPublicUrl(data.path);
+        setForm(p => ({ ...p, image_url: urlData.publicUrl }));
+        toast.success('Image uploaded.');
+        setUploading(false);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!form.title || !form.excerpt) {
+            toast.error('Please fill in title and excerpt.');
+            return;
+        }
+        setSaving(true);
+        await onSave({ ...form, slug: form.slug || slugFromTitle(form.title) });
+        setSaving(false);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label className={lbl}>Title <span className="text-red-500">*</span></label>
+                    <input className={inp} value={form.title} onChange={set('title')} placeholder="Blog post title" />
+                </div>
+                <div>
+                    <label className={lbl}>Slug (URL)</label>
+                    <input className={inp} value={form.slug || ''} onChange={set('slug')} placeholder="auto-generated-from-title" />
+                </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label className={lbl}>Category</label>
+                    <input className={inp} value={form.category} onChange={set('category')} placeholder="e.g. Company News" />
+                </div>
+                <div>
+                    <label className={lbl}>Featured Image</label>
+                    <div className="flex gap-2 items-center">
+                        <label className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 text-xs font-heading font-bold uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50">
+                            <ImageSquare size={14} /> {uploading ? 'Uploading…' : 'Upload Image'}
+                            <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                        </label>
+                        {form.image_url && (
+                            <span className="text-xs text-gray-500 truncate max-w-[180px]">✓ Image set</span>
+                        )}
+                    </div>
+                    {form.image_url && (
+                        <img src={form.image_url} alt="" className="mt-2 h-20 object-cover rounded border border-gray-200" />
+                    )}
+                </div>
+            </div>
+            <div>
+                <label className={lbl}>Excerpt <span className="text-red-500">*</span></label>
+                <textarea className={`${inp} h-24 resize-none`} value={form.excerpt} onChange={set('excerpt')} placeholder="Short summary for listings" />
+            </div>
+            <div>
+                <label className={lbl}>Content</label>
+                <textarea className={`${inp} h-48 resize-y`} value={form.content || ''} onChange={set('content')} placeholder="Full content (plain text, paragraphs separated by blank lines)" />
+            </div>
+            <div className="flex items-center gap-3">
+                <input type="checkbox" id="news-published" checked={form.published} onChange={e => setForm(p => ({ ...p, published: e.target.checked }))} className="w-4 h-4 accent-black" />
+                <label htmlFor="news-published" className="text-sm text-gray-700 font-body cursor-pointer">Published (visible on blog)</label>
+            </div>
+            <div className="flex gap-3 pt-2">
+                <button type="submit" disabled={saving} className="px-6 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors disabled:opacity-50">
+                    {saving ? 'Saving…' : 'Save Post'}
+                </button>
+                <button type="button" onClick={onCancel} className="px-6 py-2.5 border border-gray-300 text-xs font-heading font-bold uppercase tracking-wider hover:bg-gray-50 transition-colors">Cancel</button>
+            </div>
+        </form>
+    );
+};
+
 // ── LOGIN FORM ───────────────────────────────────────────────
 const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
     const [pass, setPass] = useState('');
@@ -351,7 +472,10 @@ const Admin = () => {
     const [editingCareer, setEditingCareer] = useState<Partial<CareerItem> | null>(null);
     const [showFleetForm, setShowFleetForm] = useState(false);
     const [showCareerForm, setShowCareerForm] = useState(false);
-    const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'fleet' | 'career'; id: string } | null>(null);
+    const [news, setNews] = useState<NewsItem[]>([]);
+    const [editingNews, setEditingNews] = useState<Partial<NewsItem> | null>(null);
+    const [showNewsForm, setShowNewsForm] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'fleet' | 'career' | 'news'; id: string } | null>(null);
     const [connected, setConnected] = useState(true);
 
     const fetchAll = async () => {
@@ -361,17 +485,19 @@ const Admin = () => {
             const [
                 { data: f, error: fe },
                 { data: c, error: ce },
-                { data: p, error: pe }
+                { data: p, error: pe },
+                { data: n, error: ne }
             ] = await Promise.all([
                 supabase.from('fleet').select('*').order('sort_order', { ascending: true }),
                 supabase.from('careers').select('*').order('created_at', { ascending: false }),
                 supabase.from('page_views').select('*').order('created_at', { ascending: false }).limit(100),
+                supabase.from('news').select('*').order('created_at', { ascending: false }),
             ]);
 
-            // Update each table independently — fleet/careers can refresh even if page_views fails (e.g. table missing)
             if (!fe) setFleet((f as FleetItem[]) || []);
             if (!ce) setCareers((c as CareerItem[]) || []);
             if (!pe) setPageViews((p as PageView[]) || []);
+            if (!ne) setNews((n as NewsItem[]) || []);
 
             setConnected(!fe && !ce);
             if (pe) console.warn('[Supabase] page_views fetch failed (table may be missing):', pe);
@@ -456,6 +582,40 @@ const Admin = () => {
         fetchAll();
     };
 
+    // ── NEWS/BLOG CRUD ──
+    const saveNews = async (data: Partial<NewsItem>) => {
+        const payload = { ...data, slug: data.slug || slugFromTitle(data.title || '') };
+        if (data.id) {
+            const { error } = await supabase.from('news').update(payload).eq('id', data.id);
+            if (error) { toast.error('Failed to update post.'); return; }
+            toast.success('Post updated.');
+        } else {
+            const { error } = await supabase.from('news').insert([payload]);
+            if (error) { toast.error('Failed to create post.'); return; }
+            toast.success('Post created.');
+        }
+        setShowNewsForm(false);
+        setEditingNews(null);
+        fetchAll();
+    };
+
+    const deleteNews = async (id: string) => {
+        const { error } = await supabase.from('news').delete().eq('id', id);
+        if (error) {
+            toast.error(error.message || 'Failed to delete.');
+            return;
+        }
+        setNews(prev => prev.filter(item => item.id !== id));
+        setDeleteConfirm(null);
+        toast.success('Post deleted.');
+        fetchAll();
+    };
+
+    const toggleNewsPublished = async (item: NewsItem) => {
+        await supabase.from('news').update({ published: !item.published }).eq('id', item.id);
+        fetchAll();
+    };
+
     const isClosed = (date?: string) => date ? new Date(date) < new Date() : false;
     const activeJobs = careers.filter(c => c.active && !isClosed(c.closing_date));
 
@@ -504,6 +664,7 @@ const Admin = () => {
         { name: 'Services', path: '/services', icon: <Wrench weight="fill" /> },
         { name: 'Fleet', path: '/fleet', icon: <Truck weight="fill" /> },
         { name: 'Coverage', path: '/coverage', icon: <MapPin weight="fill" /> },
+        { name: 'Blog', path: '/blog', icon: <Newspaper weight="fill" /> },
         { name: 'Careers', path: '/careers', icon: <Briefcase weight="fill" /> },
         { name: 'Contact', path: '/contact', icon: <Phone weight="fill" /> },
     ];
@@ -553,6 +714,7 @@ const Admin = () => {
                         ['dashboard', 'Dashboard', ChartBar],
                         ['fleet', 'Fleet', Truck],
                         ['careers', 'Careers', Briefcase],
+                        ['blog', 'Blog', Newspaper],
                     ] as const).map(([key, label, Icon]) => (
                         <button
                             key={key}
@@ -867,6 +1029,83 @@ const Admin = () => {
                             )}
                         </motion.div>
                     )}
+
+                    {/* ── BLOG TAB ── */}
+                    {tab === 'blog' && (
+                        <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <h2 className="text-xl font-heading font-bold text-black uppercase">Blog Posts</h2>
+                                    <p className="text-gray-500 text-xs mt-1">{news.filter(n => n.published).length} published · {news.filter(n => !n.published).length} drafts</p>
+                                </div>
+                                <button
+                                    onClick={() => { setEditingNews(null); setShowNewsForm(true); }}
+                                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors w-full sm:w-auto justify-center"
+                                >
+                                    <Plus size={13} weight="bold" className="text-white" /> New Post
+                                </button>
+                            </div>
+
+                            <AnimatePresence>
+                                {showNewsForm && (
+                                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden mb-6">
+                                        <div className="bg-white border border-gray-200 p-4 sm:p-8">
+                                            <div className="flex items-center justify-between mb-6">
+                                                <h3 className="text-sm font-heading font-bold uppercase tracking-wider">
+                                                    {editingNews?.id ? 'Edit Post' : 'New Post'}
+                                                </h3>
+                                                <button onClick={() => { setShowNewsForm(false); setEditingNews(null); }}><X size={16} className="text-gray-400 hover:text-black transition-colors" /></button>
+                                            </div>
+                                            <NewsForm
+                                                initial={editingNews || {}}
+                                                onSave={saveNews}
+                                                onCancel={() => { setShowNewsForm(false); setEditingNews(null); }}
+                                            />
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {loading ? (
+                                <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-20 bg-white animate-pulse border border-gray-100" />)}</div>
+                            ) : news.length === 0 ? (
+                                <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
+                                    <Newspaper size={32} className="text-gray-400 mx-auto mb-3" weight="fill" />
+                                    <p className="text-gray-400 text-sm">No blog posts yet. Create your first one above.</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-2">
+                                    {news.map((item, i) => (
+                                        <motion.div
+                                            key={item.id}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: i * 0.04 }}
+                                            className="bg-white border border-gray-100 px-4 md:px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:border-gray-300 transition-colors group"
+                                        >
+                                            <div className={`w-1.5 h-10 shrink-0 ${item.published ? 'bg-primary' : 'bg-gray-200'}`} />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-xs font-heading font-bold uppercase tracking-wider text-gray-400 mb-0.5">{item.category}</p>
+                                                <p className="text-sm font-heading font-bold text-black truncate">{item.title}</p>
+                                                <p className="text-xs text-gray-400 mt-0.5">{item.slug ? `/blog/${item.slug}` : `/blog/${item.id}`}</p>
+                                            </div>
+                                            <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                                <button title={item.published ? 'Unpublish' : 'Publish'} onClick={() => toggleNewsPublished(item)} className="p-2 hover:bg-gray-100 transition-colors">
+                                                    {item.published ? <Eye size={14} className="text-black" weight="fill" /> : <EyeSlash size={14} className="text-black" weight="fill" />}
+                                                </button>
+                                                <button title="Edit" onClick={() => { setEditingNews(item); setShowNewsForm(true); }} className="p-2 hover:bg-gray-100 transition-colors">
+                                                    <Pencil size={14} className="text-black" weight="fill" />
+                                                </button>
+                                                <button title="Delete" onClick={() => setDeleteConfirm({ type: 'news', id: item.id })} className="p-2 hover:bg-red-50 transition-colors">
+                                                    <Trash size={14} className="text-black hover:text-red-500 transition-colors" weight="fill" />
+                                                </button>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            )}
+                        </motion.div>
+                    )}
                 </AnimatePresence>
 
                 {/* DELETE CONFIRM MODAL */}
@@ -878,7 +1117,11 @@ const Admin = () => {
                                 <p className="text-sm text-gray-600 mb-6 font-body">This action cannot be undone.</p>
                                 <div className="flex gap-3">
                                     <button
-                                        onClick={() => deleteConfirm.type === 'fleet' ? deleteFleet(deleteConfirm.id) : deleteCareer(deleteConfirm.id)}
+                                        onClick={() => {
+                                            if (deleteConfirm.type === 'fleet') deleteFleet(deleteConfirm.id);
+                                            else if (deleteConfirm.type === 'career') deleteCareer(deleteConfirm.id);
+                                            else if (deleteConfirm.type === 'news') deleteNews(deleteConfirm.id);
+                                        }}
                                         className="px-6 py-2.5 bg-red-500 text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-red-600 transition-colors"
                                     >
                                         Delete

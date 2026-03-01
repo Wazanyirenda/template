@@ -17,85 +17,6 @@ const isClosed = (closingDate: string) => {
   return new Date(closingDate) < new Date();
 };
 
-const defaultJobs: CareerItem[] = [
-  {
-    id: '1',
-    title: 'Fleet Operations Manager',
-    department: 'Operations',
-    location: 'Ndola, Zambia',
-    type: 'Full-time',
-    description: 'Lead day-to-day fleet planning, dispatch coordination, and route performance across our cross-border transport network.',
-    requirements: [
-      '5+ years in fleet or transport operations',
-      'Experience with cross-border logistics',
-      'Strong leadership and team management skills',
-      'Familiarity with RTSA regulations',
-    ],
-    opening_date: '2026-02-01',
-    closing_date: '2026-04-30',
-    active: true,
-    created_at: '',
-    updated_at: '',
-  },
-  {
-    id: '2',
-    title: 'Customs Clearing Agent',
-    department: 'Customs & Compliance',
-    location: 'Ndola, Zambia',
-    type: 'Full-time',
-    description: 'Handle import and export customs documentation at major border crossings, ensuring compliant and efficient clearance for all client cargo.',
-    requirements: [
-      'ZICA or equivalent customs certification',
-      '3+ years in customs clearing',
-      'Knowledge of ASYCUDA and ZRA procedures',
-      'Experience with multiple corridor clearances',
-    ],
-    opening_date: '2026-02-15',
-    closing_date: '2026-04-15',
-    active: true,
-    created_at: '',
-    updated_at: '',
-  },
-  {
-    id: '3',
-    title: 'Transport Coordinator',
-    department: 'Dispatch',
-    location: 'Ndola, Zambia',
-    type: 'Full-time',
-    description: 'Coordinate pickups, cross-border schedules, driver communication, and delivery confirmations to ensure on-time performance.',
-    requirements: [
-      '2+ years in transport or logistics coordination',
-      'Strong communication skills',
-      'Experience handling route changes and delays',
-      'Ability to manage multiple corridors simultaneously',
-    ],
-    opening_date: '2026-02-20',
-    closing_date: '2026-05-20',
-    active: true,
-    created_at: '',
-    updated_at: '',
-  },
-  {
-    id: '4',
-    title: 'Account Executive',
-    department: 'Sales',
-    location: 'Ndola, Zambia',
-    type: 'Full-time',
-    description: 'Develop new client relationships, prepare transport proposals, and grow cargo volumes across our Southern and Eastern Africa network.',
-    requirements: [
-      '2+ years in B2B logistics or transport sales',
-      'Strong negotiation and proposal writing skills',
-      'Existing network in trade, mining, or agriculture preferred',
-      'Ability to manage and grow key accounts',
-    ],
-    opening_date: '2026-03-01',
-    closing_date: '2026-05-31',
-    active: true,
-    created_at: '',
-    updated_at: '',
-  },
-];
-
 const whyWork = [
   {
     icon: TrendUp,
@@ -121,7 +42,7 @@ const useSection = () => {
 };
 
 const Careers = () => {
-  const [jobs, setJobs] = useState<CareerItem[]>(defaultJobs);
+  const [jobs, setJobs] = useState<CareerItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -132,7 +53,7 @@ const Careers = () => {
         .eq('active', true)
         .order('created_at', { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         setJobs(data as CareerItem[]);
       }
       setLoading(false);
@@ -262,6 +183,14 @@ const Careers = () => {
                         <div className="h-2 bg-gray-100 rounded w-5/6" />
                       </div>
                     ))}
+                  </div>
+                ) : jobs.length === 0 ? (
+                  <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
+                    <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-4" weight="fill" />
+                    <p className="text-gray-500 font-body">No open positions at the moment. Check back soon or get in touch to express your interest.</p>
+                    <Link to="/contact" className="inline-flex items-center gap-2 mt-6 text-xs font-heading font-bold uppercase tracking-wider text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors">
+                      Contact Us <ArrowRight className="w-3 h-3" weight="bold" />
+                    </Link>
                   </div>
                 ) : (
                   <div className="grid md:grid-cols-2 gap-px bg-border">
