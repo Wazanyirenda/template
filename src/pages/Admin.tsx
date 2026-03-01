@@ -368,16 +368,13 @@ const Admin = () => {
                 supabase.from('page_views').select('*').order('created_at', { ascending: false }).limit(100),
             ]);
 
-            if (fe || ce || pe) {
-                setConnected(false);
-                // We'll log the error but silence the toast because if the tables are missing it throws 404s
-                console.warn('Supabase fetch warning (missing tables?):', { fe, ce, pe });
-            } else {
-                setConnected(true);
-                setFleet((f as FleetItem[]) || []);
-                setCareers((c as CareerItem[]) || []);
-                setPageViews((p as PageView[]) || []);
-            }
+            // Update each table independently — fleet/careers can refresh even if page_views fails (e.g. table missing)
+            if (!fe) setFleet((f as FleetItem[]) || []);
+            if (!ce) setCareers((c as CareerItem[]) || []);
+            if (!pe) setPageViews((p as PageView[]) || []);
+
+            setConnected(!fe && !ce);
+            if (pe) console.warn('[Supabase] page_views fetch failed (table may be missing):', pe);
         } catch (error) {
             setConnected(false);
             console.error(error);
@@ -411,9 +408,13 @@ const Admin = () => {
 
     const deleteFleet = async (id: string) => {
         const { error } = await supabase.from('fleet').delete().eq('id', id);
-        if (error) { toast.error('Failed to delete.'); return; }
-        toast.success('Vehicle class deleted.');
+        if (error) {
+            toast.error(error.message || 'Failed to delete. Check Supabase connection and RLS policies.');
+            return;
+        }
+        setFleet(prev => prev.filter(item => item.id !== id));
         setDeleteConfirm(null);
+        toast.success('Vehicle class deleted.');
         fetchAll();
     };
 
@@ -435,9 +436,13 @@ const Admin = () => {
 
     const deleteCareer = async (id: string) => {
         const { error } = await supabase.from('careers').delete().eq('id', id);
-        if (error) { toast.error('Failed to delete.'); return; }
-        toast.success('Position deleted.');
+        if (error) {
+            toast.error(error.message || 'Failed to delete. Check Supabase connection and RLS policies.');
+            return;
+        }
+        setCareers(prev => prev.filter(item => item.id !== id));
         setDeleteConfirm(null);
+        toast.success('Position deleted.');
         fetchAll();
     };
 
@@ -454,14 +459,50 @@ const Admin = () => {
     const isClosed = (date?: string) => date ? new Date(date) < new Date() : false;
     const activeJobs = careers.filter(c => c.active && !isClosed(c.closing_date));
 
-    // Calculate unique visitors (by IP/user agent if possible, or just rough estimate by session count here)
-    const uniqueVisitors = new Set(pageViews.map(pv => pv.user_agent)).size;
+    // ── Real analytics from page_views ──
+    const isMobileUA = (ua: string | null) => ua && /Mobile|Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const getReferrerType = (r: string | null) => {
+        if (!r || r === '') return 'direct';
+        try {
+            const url = new URL(r);
+            const host = url.hostname.toLowerCase();
+            if (/google|bing|yahoo|duckduckgo|baidu|yandex/i.test(host)) return 'search';
+            return 'referral';
+        } catch { return 'direct'; }
+    };
+    const sessions = pageViews.reduce((acc, pv) => {
+        const key = `${pv.user_agent || 'unknown'}-${pv.created_at?.slice(0, 10)}`;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(pv);
+        return acc;
+    }, {} as Record<string, PageView[]>);
+    const sessionCount = Object.keys(sessions).length;
+    const bounceCount = Object.values(sessions).filter(s => s.length === 1).length;
+    const bounceRate = sessionCount > 0 ? Math.round((bounceCount / sessionCount) * 100) : 0;
+    const uniqueVisitors = new Set(pageViews.map(pv => pv.user_agent || 'unknown')).size;
+    const deviceCounts = pageViews.reduce((acc, pv) => {
+        const type = isMobileUA(pv.user_agent) ? 'mobile' : 'desktop';
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+    const totalDev = (deviceCounts.mobile || 0) + (deviceCounts.desktop || 0);
+    const desktopPct = totalDev > 0 ? Math.round(((deviceCounts.desktop || 0) / totalDev) * 100) : 0;
+    const mobilePct = totalDev > 0 ? Math.round(((deviceCounts.mobile || 0) / totalDev) * 100) : 0;
+    const sourceCounts = pageViews.reduce((acc, pv) => {
+        const type = getReferrerType(pv.referrer);
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+    const totalSrc = pageViews.length;
+    const directPct = totalSrc > 0 ? Math.round(((sourceCounts.direct || 0) / totalSrc) * 100) : 0;
+    const searchPct = totalSrc > 0 ? Math.round(((sourceCounts.search || 0) / totalSrc) * 100) : 0;
+    const referralPct = totalSrc > 0 ? Math.round(((sourceCounts.referral || 0) / totalSrc) * 100) : 0;
 
     const pages = [
         { name: 'Home', path: '/', icon: <House weight="fill" /> },
         { name: 'About', path: '/about', icon: <Info weight="fill" /> },
         { name: 'Services', path: '/services', icon: <Wrench weight="fill" /> },
-        { name: 'Fleet', path: '/projects', icon: <Truck weight="fill" /> },
+        { name: 'Fleet', path: '/fleet', icon: <Truck weight="fill" /> },
         { name: 'Coverage', path: '/coverage', icon: <MapPin weight="fill" /> },
         { name: 'Careers', path: '/careers', icon: <Briefcase weight="fill" /> },
         { name: 'Contact', path: '/contact', icon: <Phone weight="fill" /> },
@@ -545,22 +586,20 @@ const Admin = () => {
                                 <StatCard
                                     label="Unique Visitors"
                                     value={uniqueVisitors}
-                                    sub="Device count estimate"
+                                    sub="Distinct user agents"
                                     icon={Users}
-                                    trend={{ value: '12% up', up: true }}
                                 />
                                 <StatCard
                                     label="Avg. Session"
-                                    value={pageViews.length > 0 ? "2m 14s" : "0m 0s"}
-                                    sub="Estimated duration"
+                                    value={pageViews.length > 0 ? "—" : "—"}
+                                    sub="Duration not tracked"
                                     icon={Clock}
                                 />
                                 <StatCard
                                     label="Bounce Rate"
-                                    value={pageViews.length > 0 ? "42%" : "0%"}
-                                    sub="Single page visits"
+                                    value={pageViews.length > 0 ? `${bounceRate}%` : "0%"}
+                                    sub="Single-page sessions"
                                     icon={TrendUp}
-                                    trend={pageViews.length > 0 ? { value: '2% down', up: true } : undefined}
                                 />
                             </div>
 
@@ -630,7 +669,7 @@ const Admin = () => {
                                                 <span className="text-xs font-body">Desktop</span>
                                             </div>
                                             <span className="text-xs font-heading font-bold">
-                                                {pageViews.length > 0 ? <CountUp end={68} suffix="%" duration={2} /> : "0%"}
+                                                {pageViews.length > 0 ? <CountUp end={desktopPct} suffix="%" duration={2} /> : "0%"}
                                             </span>
                                         </div>
                                         <div className="flex items-center justify-between">
@@ -639,7 +678,7 @@ const Admin = () => {
                                                 <span className="text-xs font-body">Mobile</span>
                                             </div>
                                             <span className="text-xs font-heading font-bold">
-                                                {pageViews.length > 0 ? <CountUp end={32} suffix="%" duration={2} /> : "0%"}
+                                                {pageViews.length > 0 ? <CountUp end={mobilePct} suffix="%" duration={2} /> : "0%"}
                                             </span>
                                         </div>
 
@@ -649,19 +688,19 @@ const Admin = () => {
                                                 <div className="flex justify-between items-center">
                                                     <span>Direct</span>
                                                     <span className="font-heading font-bold">
-                                                        {pageViews.length > 0 ? <CountUp end={45} suffix="%" duration={2} /> : "0%"}
+                                                        {pageViews.length > 0 ? <CountUp end={directPct} suffix="%" duration={2} /> : "0%"}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span>Search</span>
                                                     <span className="font-heading font-bold">
-                                                        {pageViews.length > 0 ? <CountUp end={35} suffix="%" duration={2} /> : "0%"}
+                                                        {pageViews.length > 0 ? <CountUp end={searchPct} suffix="%" duration={2} /> : "0%"}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
                                                     <span>Referral</span>
                                                     <span className="font-heading font-bold">
-                                                        {pageViews.length > 0 ? <CountUp end={20} suffix="%" duration={2} /> : "0%"}
+                                                        {pageViews.length > 0 ? <CountUp end={referralPct} suffix="%" duration={2} /> : "0%"}
                                                     </span>
                                                 </div>
                                             </div>

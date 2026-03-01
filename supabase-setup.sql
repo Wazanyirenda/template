@@ -189,7 +189,7 @@ INSERT INTO news (title, category, excerpt, content, published) VALUES
 (
     'Fleet Expansion: 5 New Heavy-Haulage Trucks',
     'Company News',
-    'Our fleet grows to over 30 vehicles with the addition of five new 30-tonne interlink trucks, boosting capacity on high-demand corridors.',
+    'Our fleet grows with the addition of new 30-tonne interlink trucks, boosting capacity on high-demand corridors.',
     'Calm Mountain Transport has taken delivery of five new 30-tonne interlink trucks, bringing our total fleet to over 30 active vehicles. These units are immediately deployed on our busiest corridors — Zambia to Tanzania and Zambia to South Africa — to meet growing client demand.',
     true
 ),
@@ -281,17 +281,6 @@ INSERT INTO fleet (category, eyebrow, description, capacity, body_type, routes, 
     'Inland / Last-mile',
     'bg-primary',
     3,
-    true
-),
-(
-    'Refrigerated Transport',
-    'Cold Chain',
-    'Temperature-controlled units for fresh and frozen food requiring unbroken cold chain integrity.',
-    'Up to 15,000 kg',
-    'Reefer / Refrigerated van',
-    'Domestic & cross-border',
-    'bg-secondary',
-    4,
     true
 );
 

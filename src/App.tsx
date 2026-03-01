@@ -7,7 +7,7 @@ import { usePageTracking } from "@/hooks/usePageTracking";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
-import Projects from "./pages/Projects";
+import Fleet from "./pages/Fleet";
 import Coverage from "./pages/Coverage";
 import Contact from "./pages/Contact";
 import Careers from "./pages/Careers";
@@ -24,7 +24,8 @@ const AppRoutes = () => {
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/fleet" element={<Fleet />} />
+        <Route path="/projects" element={<Fleet />} />
         <Route path="/coverage" element={<Coverage />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/contact" element={<Contact />} />

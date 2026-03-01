@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   ChatCircle, MapTrifold, Truck, CheckCircle,
   ShieldCheck, Wrench, ArrowRight,
-  AirplaneTilt, Snowflake, NavigationArrow, Buildings
+  AirplaneTilt, NavigationArrow, Buildings
 } from 'phosphor-react';
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
@@ -49,7 +49,6 @@ const processSteps = [
 
 const operationalServices = [
   { icon: Truck, label: "Road Haulage", desc: "Fleet of containerised trucks from 3.5t to 30t, handling consolidated and bulk loads from 1 kg up to 30,000 kg nationwide." },
-  { icon: Snowflake, label: "Refrigerated Transport", desc: "Temperature-controlled transport for fresh and frozen goods — maintaining cold chain integrity from collection to final delivery." },
   { icon: NavigationArrow, label: "Tracking & Monitoring", desc: "All trucks fitted with satellite tracking and drivers reachable around the clock. Real-time reports available on request." },
   { icon: ShieldCheck, label: "Safety & Security", desc: "All drivers vetted prior to employment, safety equipment provided, and comprehensive security maintained across our yard and facilities." },
   { icon: Buildings, label: "Storage & Warehousing", desc: "2,120 sqm of warehouse space, 3,000 sqm of secure parking, and 350 sqm of offices — purpose-built for consolidation and pre-dispatch storage." },
@@ -57,7 +56,7 @@ const operationalServices = [
 ];
 
 const stats = [
-  { value: 30, suffix: "+", label: "Trucks in Fleet", description: "Heavy, medium, and light commercial vehicles" },
+  { value: 5, suffix: "+", label: "Trucks in Fleet", description: "Heavy, medium, and light commercial vehicles" },
   { value: 11, suffix: "", label: "Countries Served", description: "Across Southern and Eastern Africa" },
   { value: 2120, suffix: " sqm", label: "Warehouse Space", description: "Purpose-built for consolidation and storage" },
   { value: 4, suffix: "", label: "Ocean Ports", description: "Dar es Salaam, Beira, Durban & Walvis Bay" },

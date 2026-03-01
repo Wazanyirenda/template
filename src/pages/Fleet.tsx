@@ -2,17 +2,18 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Truck, ArrowRight, Wrench, ShieldCheck, NavigationArrow, Snowflake } from 'phosphor-react';
+import { Truck, ArrowRight, Wrench, ShieldCheck, NavigationArrow } from 'phosphor-react';
+import { supabase } from '@/lib/supabase';
 
-const fleet = [
+const defaultFleet: Array<{ category: string; eyebrow: string; description: string; capacity: string; body_type: string; routes: string; accent: string }> = [
   {
     category: "Heavy Haulage",
     eyebrow: "30-Tonne Class",
     description: "Our primary long-haul cross-border fleet. Fully containerized, fitted with satellite tracking, and operated by experienced drivers. Ideal for bulk commercial cargo across all corridors.",
     capacity: "Up to 30,000 kg",
-    type: "Interlink / Side-tipper",
+    body_type: "Interlink / Side-tipper",
     routes: "All cross-border corridors",
     accent: "bg-primary",
   },
@@ -21,7 +22,7 @@ const fleet = [
     eyebrow: "10–15 Tonne Class",
     description: "A versatile class suited to consolidated cargo and mixed loads. Handles routes where larger trucks face access restrictions, including some inland delivery areas.",
     capacity: "Up to 15,000 kg",
-    type: "Rigid flatbed / Curtainsider",
+    body_type: "Rigid flatbed / Curtainsider",
     routes: "Regional and inland routes",
     accent: "bg-secondary",
   },
@@ -30,27 +31,17 @@ const fleet = [
     eyebrow: "3.5–7 Tonne Class",
     description: "Used for urgent, smaller consignments and last-mile delivery within Zambia. These units are also deployed for ad-hoc cargo requirements at short notice.",
     capacity: "Up to 7,000 kg",
-    type: "Dropside / Van body",
+    body_type: "Dropside / Van body",
     routes: "Inland / Last-mile",
     accent: "bg-primary",
-  },
-  {
-    category: "Refrigerated Transport",
-    eyebrow: "Cold Chain",
-    description: "Temperature-controlled units for fresh and frozen food manufacturers requiring unbroken cold chain integrity from collection through to final delivery.",
-    capacity: "Up to 15,000 kg",
-    type: "Reefer / Refrigerated van",
-    routes: "Domestic & cross-border",
-    accent: "bg-secondary",
   },
 ];
 
 const capabilities = [
-  { icon: Truck, title: "30+ Trucks", desc: "A maintained fleet of over 30 vehicles spanning heavy haulage, medium, light commercial, and refrigerated classes." },
+  { icon: Truck, title: "5+ Trucks", desc: "A maintained fleet of over 5 vehicles spanning heavy haulage, medium, and light commercial classes." },
   { icon: Wrench, title: "In-House Workshop", desc: "A dedicated workshop staffed by qualified mechanics ensures fleet reliability. Road breakdowns are recovered by our own recovery vehicle." },
   { icon: NavigationArrow, title: "Satellite Tracking", desc: "All trucks are fitted with GPS satellite tracking. Real-time location reports are available for active shipments on request." },
   { icon: ShieldCheck, title: "Vetted Drivers", desc: "All drivers are vetted before employment, carry the appropriate licenses, and are supplied with required safety and personal protective equipment." },
-  { icon: Snowflake, title: "Cold Chain Ready", desc: "Our refrigerated units maintain consistent temperature throughout transit, protecting food-grade and pharmaceutical cargo." },
   { icon: Truck, title: "Yard & Parking", desc: "3,000 sqm of secured yard space for fleet parking and cargo staging, with 2,120 sqm of bonded warehousing adjacent." },
 ];
 
@@ -60,7 +51,9 @@ const useSection = () => {
   return { ref, isInView };
 };
 
-const FleetClassesSection = () => {
+type FleetDisplayItem = { category: string; eyebrow: string; description: string; capacity: string; body_type: string; routes: string; accent: string };
+
+const FleetClassesSection = ({ fleet }: { fleet: FleetDisplayItem[] }) => {
   const { ref, isInView } = useSection();
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
@@ -77,7 +70,7 @@ const FleetClassesSection = () => {
           </h2>
           <div className="w-14 h-0.5 bg-primary mt-6 mb-6" />
           <p className="text-gray-500 text-sm max-w-2xl leading-relaxed font-body">
-            Calm Mountain Transport operates a diverse fleet of over 30 vehicles. Each class is matched to a different cargo type and route requirement — from heavy cross-border loads to refrigerated food cargo.
+            Calm Mountain Transport operates a diverse fleet of over 5 vehicles. Each class is matched to a different cargo type and route requirement — from heavy cross-border loads to specialized cargo.
           </p>
         </motion.div>
 
@@ -103,7 +96,7 @@ const FleetClassesSection = () => {
                   </div>
                   <div>
                     <p className="text-black/40 text-[10px] font-heading uppercase tracking-wider mb-1">Body Type</p>
-                    <p className="text-black font-heading font-bold text-xs uppercase">{item.type}</p>
+                    <p className="text-black font-heading font-bold text-xs uppercase">{item.body_type}</p>
                   </div>
                   <div>
                     <p className="text-black/40 text-[10px] font-heading uppercase tracking-wider mb-1">Routes</p>
@@ -179,7 +172,7 @@ const FleetImageSection = () => {
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <p className="font-heading font-bold text-2xl text-black leading-none">30+</p>
+          <p className="font-heading font-bold text-2xl text-black leading-none">5+</p>
           <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Active Vehicles</p>
         </motion.div>
         <div className="absolute bottom-4 left-6 flex gap-2">
@@ -256,7 +249,24 @@ const FleetCTA = () => {
   );
 };
 
-const Projects = () => {
+const Fleet = () => {
+  const [fleet, setFleet] = useState<FleetDisplayItem[]>(defaultFleet);
+
+  useEffect(() => {
+    const fetchFleet = async () => {
+      const { data, error } = await supabase
+        .from('fleet')
+        .select('category, eyebrow, description, capacity, body_type, routes, accent')
+        .eq('active', true)
+        .order('sort_order', { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        setFleet(data as FleetDisplayItem[]);
+      }
+    };
+    fetchFleet();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
@@ -273,20 +283,20 @@ const Projects = () => {
           <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
             <div className="container mx-auto px-4 md:px-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5">30+ Vehicles</p>
+                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5">5+ Vehicles</p>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white uppercase tracking-tight leading-tight mb-5 md:mb-6">
                   Our<br />Fleet
                 </h1>
                 <div className="w-16 h-0.5 bg-primary mb-6" />
                 <p className="text-lg text-white/70 max-w-xl font-light leading-relaxed">
-                  A maintained fleet of heavy haulage, medium, light commercial, and refrigerated vehicles — ready for cross-border and inland cargo.
+                  A maintained fleet of heavy haulage, medium, and light commercial vehicles — ready for cross-border and inland cargo.
                 </p>
               </motion.div>
             </div>
           </div>
         </section>
 
-        <FleetClassesSection />
+        <FleetClassesSection fleet={fleet} />
         <FleetCapabilitiesSection />
         <FleetImageSection />
         <FleetCTA />
@@ -297,4 +307,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Fleet;

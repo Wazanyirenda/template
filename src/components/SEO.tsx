@@ -153,7 +153,6 @@ export const freightServiceSchema = {
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Cross-Border Road Haulage' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Customs Clearance' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Air Freight Forwarding' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Refrigerated Transport' } },
             { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Warehousing & Storage' } },
         ],
     },
