@@ -14,7 +14,7 @@ const SITE_NAME = 'Calm Mountain Transport Limited';
 const BASE_URL = 'https://calmmt.co.zm';
 const DEFAULT_DESCRIPTION =
     'Calm Mountain Transport Limited — Cross-border cargo transport, customs clearance, and freight forwarding across Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa. Based in Ndola, Zambia.';
-const DEFAULT_IMAGE = `${BASE_URL}/assets/images/og-default.jpg`;
+const DEFAULT_IMAGE = `${BASE_URL}/logo.png`;
 const DEFAULT_KEYWORDS =
     'cargo transport Zambia, cross-border logistics Africa, customs clearance Zambia, freight forwarding Ndola, truck transport Southern Africa, logistics company Zambia, cargo transport Tanzania, Malawi freight, Uganda cargo, Rwanda logistics, South Africa transport corridor';
 
@@ -109,7 +109,7 @@ export const organizationSchema = {
     '@type': 'Organization',
     name: 'Calm Mountain Transport Limited',
     url: BASE_URL,
-    logo: `${BASE_URL}/assets/images/logo.png`,
+    logo: `${BASE_URL}/logo.png`,
     description: DEFAULT_DESCRIPTION,
     address: {
         '@type': 'PostalAddress',
@@ -163,7 +163,7 @@ export const localBusinessSchema = {
     '@type': 'LocalBusiness',
     '@id': `${BASE_URL}/#localbusiness`,
     name: 'Calm Mountain Transport Limited',
-    image: `${BASE_URL}/assets/images/og-default.jpg`,
+    image: `${BASE_URL}/logo.png`,
     url: BASE_URL,
     telephone: '+260-000-000000',
     email: 'info@calmmt.co.zm',

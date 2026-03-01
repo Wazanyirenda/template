@@ -11,15 +11,14 @@ export const usePageTracking = () => {
 
     useEffect(() => {
         const track = async () => {
-            try {
-                await supabase.from('page_views').insert([{
-                    page_path: location.pathname,
-                    page_title: document.title,
-                    referrer: document.referrer || null,
-                    user_agent: navigator.userAgent || null,
-                }]);
-            } catch {
-                // silently fail — tracking should never break the app
+            const { error } = await supabase.from('page_views').insert([{
+                page_path: location.pathname,
+                page_title: document.title,
+                referrer: document.referrer || null,
+                user_agent: navigator.userAgent || null,
+            }]);
+            if (error && import.meta.env.DEV) {
+                console.warn('[PageTracking] Failed to record view:', error.message, '- Ensure page_views table exists and RLS allows INSERT.');
             }
         };
         track();
