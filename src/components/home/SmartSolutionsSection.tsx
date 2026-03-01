@@ -28,15 +28,15 @@ const reasons = [
 
 export const SmartSolutionsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.2 });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-secondary">
+    <section ref={ref} className="py-24 md:py-32 bg-secondary overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="mb-16"
         >
           <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">The Difference</p>
@@ -50,9 +50,9 @@ export const SmartSolutionsSection = () => {
           {reasons.map((reason, index) => (
             <motion.div
               key={reason.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
               className="bg-secondary p-10 flex flex-col group hover:bg-white/5 transition-colors"
             >
               <div className="w-11 h-11 bg-primary/10 flex items-center justify-center mb-7 group-hover:bg-primary/20 transition-colors">

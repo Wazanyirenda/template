@@ -11,17 +11,17 @@ import { useRef } from 'react';
 
 const IntroductionSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 bg-card border-b border-border">
+    <section ref={ref} className="py-16 bg-card border-b border-border overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         <div className="grid md:grid-cols-3 gap-10 items-start">
           <motion.div
             className="md:col-span-1"
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <p className="font-heading font-bold text-foreground text-xs uppercase tracking-[0.25em] leading-relaxed">
               Calm Mountain<br />Transport<br />Limited
@@ -30,9 +30,9 @@ const IntroductionSection = () => {
           </motion.div>
           <motion.div
             className="md:col-span-2"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
           >
             <p className="text-foreground font-heading font-bold text-2xl sm:text-3xl md:text-4xl uppercase leading-tight max-w-2xl mb-6">
               Cross-Border Cargo Transport Across Seven Countries.
@@ -49,7 +49,7 @@ const IntroductionSection = () => {
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden">
+    <div className="min-h-screen flex flex-col overflow-x-clip">
       <Header />
       <main className="flex-1">
         <HeroSection />

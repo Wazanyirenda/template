@@ -39,7 +39,7 @@ type DisplayItem = {
 
 export const NewsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.2 });
   const [items, setItems] = useState<DisplayItem[]>(defaultHighlights);
 
   useEffect(() => {
@@ -70,9 +70,9 @@ export const NewsSection = () => {
     <section ref={ref} className="py-24 md:py-32 bg-white">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="mb-16"
         >
           <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Cargo Types</p>
@@ -86,9 +86,9 @@ export const NewsSection = () => {
           {items.map((item, index) => (
             <motion.article
               key={item.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="bg-white group overflow-hidden flex flex-col hover:shadow-lg transition-shadow"
             >
               <div className="h-56 overflow-hidden relative">

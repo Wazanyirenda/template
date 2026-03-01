@@ -78,7 +78,7 @@ export const Header = () => {
               <div key={link.label} className="relative group">
                 <Link
                   to={link.href}
-                  className={`text-sm lg:text-[15px] font-medium tracking-wide font-body transition-colors ${scrolled ? 'text-black hover:text-primary' : 'text-white hover:text-primary'}`}
+                  className={`text-sm lg:text-[15px] font-medium tracking-wide font-body transition-colors ${scrolled ? 'text-black hover:text-black' : 'text-white hover:text-primary'}`}
                 >
                   {link.label}
                 </Link>
@@ -88,7 +88,7 @@ export const Header = () => {
 
             {/* Search */}
             <button className="p-2 rounded-full transition-colors group">
-              <MagnifyingGlass className={`w-5 h-5 transition-colors ${scrolled ? 'text-black group-hover:text-primary' : 'text-white/70 group-hover:text-white'}`} />
+              <MagnifyingGlass className={`w-5 h-5 transition-colors ${scrolled ? 'text-black group-hover:text-black' : 'text-white/70 group-hover:text-white'}`} />
             </button>
 
             {/* CTA Button */}

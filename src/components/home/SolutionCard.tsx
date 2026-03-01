@@ -26,7 +26,7 @@ export const SolutionCard = ({
   reverse = false,
 }: SolutionCardProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.15 });
 
   return (
     <div
@@ -35,9 +35,9 @@ export const SolutionCard = ({
     >
       {/* Content */}
       <motion.div
-        initial={{ opacity: 0, x: reverse ? 30 : -30 }}
+        initial={{ opacity: 0, x: reverse ? 80 : -80 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.7 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className={`flex flex-col justify-center px-10 py-24 md:px-16 ${reverse ? 'lg:order-2' : ''}`}
       >
         <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">{title}</p>
@@ -67,9 +67,9 @@ export const SolutionCard = ({
 
       {/* Image */}
       <motion.div
-        initial={{ opacity: 0, x: reverse ? -30 : 30 }}
+        initial={{ opacity: 0, x: reverse ? -80 : 80 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.7, delay: 0.15 }}
+        transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         className={`relative overflow-hidden h-[500px] lg:h-auto ${reverse ? 'lg:order-1' : ''}`}
       >
         {imageSrc ? (

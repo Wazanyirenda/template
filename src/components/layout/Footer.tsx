@@ -1,14 +1,25 @@
 import { Link } from 'react-router-dom';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { FacebookLogo, TwitterLogo, LinkedinLogo, Envelope, Phone, MapPin } from 'phosphor-react';
 
 export const Footer = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.2 });
+
   return (
-    <footer className="bg-black text-white pt-20 pb-10 border-t border-white/10">
+    <motion.footer
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-black text-white pt-20 pb-10 border-t border-white/10"
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="space-y-8">
-            <div className="inline-block bg-white p-4 rounded-lg">
-              <img src="/logo.png" alt="Calm Mountain Transport Logo" className="w-40 h-auto object-contain" />
+            <div className="inline-block">
+              <img src="/logo.png" alt="Calm Mountain Transport Logo" className="w-40 h-auto object-contain brightness-0 invert" />
             </div>
             <p className="text-gray-400 leading-relaxed text-sm">
               Calm Mountain Transport Limited provides structured cross-border cargo transportation between Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa.
@@ -85,6 +96,6 @@ export const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };

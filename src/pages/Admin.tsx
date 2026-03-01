@@ -123,20 +123,20 @@ const CareerForm = ({
             </div>
             <div>
                 <label className={lbl}>Requirements</label>
-                <div className="flex gap-2 mb-3">
+                            <div className="flex flex-col sm:flex-row gap-2 mb-3">
                     <input
-                        className={`${inp} flex-1`}
+                        className={`${inp} flex-1 min-w-0`}
                         value={reqInput}
                         onChange={e => setReqInput(e.target.value)}
                         placeholder="Type a requirement and press Add"
                         onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addReq())}
                     />
-                    <button type="button" onClick={addReq} className="px-4 py-2 bg-black text-white text-xs font-bold tracking-wider hover:bg-secondary transition-colors">Add</button>
+                    <button type="button" onClick={addReq} className="px-4 py-2 bg-black text-white text-xs font-bold tracking-wider hover:bg-secondary transition-colors shrink-0">Add</button>
                 </div>
                 <div className="space-y-1.5">
                     {(form.requirements || []).map((req, i) => (
                         <div key={i} className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-100">
-                            <span className="w-1.5 h-1.5 bg-yellow-400 block shrink-0" />
+                            <span className="w-1.5 h-1.5 bg-black block shrink-0" />
                             <span className="text-xs text-gray-700 font-body flex-1">{req}</span>
                             <button type="button" onClick={() => removeReq(i)} className="text-gray-400 hover:text-red-500 transition-colors"><X size={12} /></button>
                         </div>
@@ -144,7 +144,7 @@ const CareerForm = ({
                 </div>
             </div>
             <div className="flex items-center gap-3">
-                <input type="checkbox" id="active" checked={form.active} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} className="w-4 h-4 accent-yellow-400" />
+                <input type="checkbox" id="active" checked={form.active} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} className="w-4 h-4 accent-black" />
                 <label htmlFor="active" className="text-sm text-gray-700 font-body cursor-pointer">Active (visible on Careers page)</label>
             </div>
             <div className="flex gap-3 pt-2">
@@ -200,7 +200,7 @@ const FleetForm = ({
                 <label className={lbl}>Description <span className="text-red-500">*</span></label>
                 <textarea className={`${inp} h-24 resize-none`} value={form.description} onChange={set('description')} placeholder="Vehicle class description" />
             </div>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label className={lbl}>Capacity <span className="text-red-500">*</span></label>
                     <input className={inp} value={form.capacity} onChange={set('capacity')} placeholder="e.g. Up to 30,000 kg" />
@@ -228,7 +228,7 @@ const FleetForm = ({
                 </div>
             </div>
             <div className="flex items-center gap-3">
-                <input type="checkbox" id="fleet-active" checked={form.active} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} className="w-4 h-4 accent-yellow-400" />
+                <input type="checkbox" id="fleet-active" checked={form.active} onChange={e => setForm(p => ({ ...p, active: e.target.checked }))} className="w-4 h-4 accent-black" />
                 <label htmlFor="fleet-active" className="text-sm text-gray-700 font-body cursor-pointer">Active (visible on Fleet page)</label>
             </div>
             <div className="flex gap-3 pt-2">
@@ -258,11 +258,11 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-6">
+        <div className="min-h-screen bg-black flex items-center justify-center p-4 sm:p-6">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-md w-full bg-white p-10 shadow-2xl"
+                className="max-w-md w-full bg-white p-6 sm:p-10 shadow-2xl"
             >
                 <div className="flex items-center gap-4 mb-8">
                     <div className="w-full max-w-[120px]">
@@ -315,7 +315,7 @@ const StatCard = ({ label, value, sub, icon: Icon, trend }: {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.5 }}
-            className="bg-white border border-gray-100 p-6 flex flex-col gap-4 hover:border-gray-300 transition-colors"
+            className="bg-white border border-gray-100 p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-300 transition-colors"
         >
             <div className="flex items-start justify-between">
                 <div>
@@ -325,7 +325,7 @@ const StatCard = ({ label, value, sub, icon: Icon, trend }: {
                     </p>
                     {sub && <p className="text-xs text-gray-400 mt-1 font-body">{sub}</p>}
                 </div>
-                <div className="w-10 h-10 bg-gray-100 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-gray-200 flex items-center justify-center shrink-0">
                     <Icon size={20} className="text-black" weight="fill" />
                 </div>
             </div>
@@ -468,7 +468,7 @@ const Admin = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 font-body">
+        <div className="min-h-screen bg-gray-50 font-body overflow-x-clip">
             {/* TOP BAR */}
             <header className="bg-black border-b border-white/10 px-4 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
@@ -516,12 +516,12 @@ const Admin = () => {
                         <button
                             key={key}
                             onClick={() => setTab(key)}
-                            className={`flex items-center gap-2 px-6 py-4 text-xs font-heading font-bold uppercase tracking-wider border-b-2 transition-colors ${tab === key
+                            className={`flex items-center gap-2 px-4 md:px-6 py-4 text-xs font-heading font-bold uppercase tracking-wider border-b-2 transition-colors shrink-0 ${tab === key
                                 ? 'border-black text-black'
-                                : 'border-transparent text-gray-400 hover:text-gray-700'
+                                : 'border-transparent text-gray-500 hover:text-gray-800'
                                 }`}
                         >
-                            <Icon size={14} weight="fill" /> {label}
+                            <Icon size={14} weight="fill" className={tab === key ? 'text-black' : 'text-gray-600'} /> {label}
                         </button>
                     ))}
                 </div>
@@ -571,7 +571,7 @@ const Admin = () => {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true, margin: "-20px" }}
                                     transition={{ duration: 0.5, delay: 0.2 }}
-                                    className="lg:col-span-2 bg-white border border-gray-100 p-6"
+                                    className="lg:col-span-2 bg-white border border-gray-100 p-4 sm:p-6"
                                 >
                                     <h3 className="text-sm font-heading font-bold uppercase tracking-wider text-black mb-6 flex items-center gap-2">
                                         <Globe size={16} className="text-black" weight="fill" /> Top Pages
@@ -599,7 +599,7 @@ const Admin = () => {
                                                                 whileInView={{ width: `${Math.min(100, (count / pageViews.length) * 100)}%` }}
                                                                 viewport={{ once: true }}
                                                                 transition={{ duration: 1, ease: 'easeOut' }}
-                                                                className="h-full bg-primary"
+                                                                className="h-full bg-black"
                                                             />
                                                         </div>
                                                         <span className="text-xs font-heading font-bold text-black">
@@ -618,7 +618,7 @@ const Admin = () => {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true, margin: "-20px" }}
                                     transition={{ duration: 0.5, delay: 0.4 }}
-                                    className="bg-white border border-gray-100 p-6"
+                                    className="bg-white border border-gray-100 p-4 sm:p-6"
                                 >
                                     <h3 className="text-sm font-heading font-bold uppercase tracking-wider text-black mb-6 flex items-center gap-2">
                                         <DeviceMobile size={16} className="text-black" weight="fill" /> Devices
@@ -626,7 +626,7 @@ const Admin = () => {
                                     <div className="space-y-6">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <Desktop size={20} className="text-gray-400" />
+                                                <Desktop size={20} className="text-black" weight="fill" />
                                                 <span className="text-xs font-body">Desktop</span>
                                             </div>
                                             <span className="text-xs font-heading font-bold">
@@ -635,7 +635,7 @@ const Admin = () => {
                                         </div>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <DeviceMobile size={20} className="text-gray-400" />
+                                                <DeviceMobile size={20} className="text-black" weight="fill" />
                                                 <span className="text-xs font-body">Mobile</span>
                                             </div>
                                             <span className="text-xs font-heading font-bold">
@@ -675,23 +675,23 @@ const Admin = () => {
                     {/* ── FLEET TAB ── */}
                     {tab === 'fleet' && (
                         <motion.div key="fleet" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-                            <div className="flex items-center justify-between mb-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                 <div>
                                     <h2 className="text-xl font-heading font-bold text-black uppercase">Fleet Classes</h2>
                                     <p className="text-gray-500 text-xs mt-1">{fleet.filter(f => f.active).length} active · {fleet.filter(f => !f.active).length} hidden</p>
                                 </div>
                                 <button
                                     onClick={() => { setEditingFleet(null); setShowFleetForm(true); }}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors"
+                                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors w-full sm:w-auto justify-center"
                                 >
-                                    <Plus size={13} weight="bold" /> New Vehicle Class
+                                    <Plus size={13} weight="bold" className="text-white" /> New Vehicle Class
                                 </button>
                             </div>
 
                             <AnimatePresence>
                                 {showFleetForm && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden mb-6">
-                                        <div className="bg-white border border-gray-200 p-8">
+                                        <div className="bg-white border border-gray-200 p-4 sm:p-8">
                                             <div className="flex items-center justify-between mb-6">
                                                 <h3 className="text-sm font-heading font-bold uppercase tracking-wider">
                                                     {editingFleet?.id ? 'Edit Vehicle Class' : 'New Vehicle Class'}
@@ -712,7 +712,7 @@ const Admin = () => {
                                 <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-20 bg-white animate-pulse border border-gray-100" />)}</div>
                             ) : fleet.length === 0 ? (
                                 <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
-                                    <Truck size={32} className="text-gray-200 mx-auto mb-3" />
+                                    <Truck size={32} className="text-gray-400 mx-auto mb-3" weight="fill" />
                                     <p className="text-gray-400 text-sm">No vehicle classes yet. Create your first one above.</p>
                                 </div>
                             ) : (
@@ -723,7 +723,7 @@ const Admin = () => {
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: i * 0.04 }}
-                                            className="bg-white border border-gray-100 px-6 py-4 flex items-center gap-4 hover:border-gray-300 transition-colors group"
+                                            className="bg-white border border-gray-100 px-4 md:px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:border-gray-300 transition-colors group"
                                         >
                                             <div className={`w-1.5 h-10 shrink-0 ${item.active ? 'bg-primary' : 'bg-gray-200'}`} />
                                             <div className="flex-1 min-w-0">
@@ -731,15 +731,15 @@ const Admin = () => {
                                                 <p className="text-sm font-heading font-bold text-black truncate">{item.category}</p>
                                                 <p className="text-xs text-gray-400 mt-0.5">{item.capacity} · {item.body_type}</p>
                                             </div>
-                                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                                                 <button title={item.active ? 'Hide' : 'Show'} onClick={() => toggleFleetActive(item)} className="p-2 hover:bg-gray-100 transition-colors">
-                                                    {item.active ? <Eye size={14} className="text-primary" /> : <EyeSlash size={14} className="text-gray-400" />}
+                                                    {item.active ? <Eye size={14} className="text-black" weight="fill" /> : <EyeSlash size={14} className="text-black" weight="fill" />}
                                                 </button>
                                                 <button title="Edit" onClick={() => { setEditingFleet(item); setShowFleetForm(true); }} className="p-2 hover:bg-gray-100 transition-colors">
-                                                    <Pencil size={14} className="text-gray-500" />
+                                                    <Pencil size={14} className="text-black" weight="fill" />
                                                 </button>
                                                 <button title="Delete" onClick={() => setDeleteConfirm({ type: 'fleet', id: item.id })} className="p-2 hover:bg-red-50 transition-colors">
-                                                    <Trash size={14} className="text-gray-400 hover:text-red-500 transition-colors" />
+                                                    <Trash size={14} className="text-black hover:text-red-500 transition-colors" weight="fill" />
                                                 </button>
                                             </div>
                                         </motion.div>
@@ -752,23 +752,23 @@ const Admin = () => {
                     {/* ── CAREERS TAB ── */}
                     {tab === 'careers' && (
                         <motion.div key="careers" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-                            <div className="flex items-center justify-between mb-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                 <div>
                                     <h2 className="text-xl font-heading font-bold text-black uppercase">Job Openings</h2>
                                     <p className="text-gray-500 text-xs mt-1">{activeJobs.length} active · {careers.filter(c => isClosed(c.closing_date)).length} closed</p>
                                 </div>
                                 <button
                                     onClick={() => { setEditingCareer(null); setShowCareerForm(true); }}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors"
+                                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-black text-white text-xs font-heading font-bold uppercase tracking-wider hover:bg-secondary transition-colors w-full sm:w-auto justify-center"
                                 >
-                                    <Plus size={13} weight="bold" /> New Position
+                                    <Plus size={13} weight="bold" className="text-white" /> New Position
                                 </button>
                             </div>
 
                             <AnimatePresence>
                                 {showCareerForm && (
                                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden mb-6">
-                                        <div className="bg-white border border-gray-200 p-8">
+                                        <div className="bg-white border border-gray-200 p-4 sm:p-8">
                                             <div className="flex items-center justify-between mb-6">
                                                 <h3 className="text-sm font-heading font-bold uppercase tracking-wider">
                                                     {editingCareer?.id ? 'Edit Position' : 'New Position'}
@@ -789,7 +789,7 @@ const Admin = () => {
                                 <div className="space-y-3">{[1, 2, 3].map(i => <div key={i} className="h-20 bg-white animate-pulse border border-gray-100" />)}</div>
                             ) : careers.length === 0 ? (
                                 <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
-                                    <Briefcase size={32} className="text-gray-200 mx-auto mb-3" />
+                                    <Briefcase size={32} className="text-gray-400 mx-auto mb-3" weight="fill" />
                                     <p className="text-gray-400 text-sm">No job positions yet.</p>
                                 </div>
                             ) : (
@@ -800,7 +800,7 @@ const Admin = () => {
                                             initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: i * 0.04 }}
-                                            className="bg-white border border-gray-100 px-6 py-4 flex items-center gap-4 hover:border-gray-300 transition-colors group"
+                                            className="bg-white border border-gray-100 px-4 md:px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:border-gray-300 transition-colors group"
                                         >
                                             <div className={`w-1.5 h-10 shrink-0 ${isClosed(item.closing_date) ? 'bg-red-400' : item.active ? 'bg-primary' : 'bg-gray-200'}`} />
                                             <div className="flex-1 min-w-0">
@@ -811,15 +811,15 @@ const Admin = () => {
                                                     {isClosed(item.closing_date) && <span className="text-red-500 font-bold"> — Closed</span>}
                                                 </p>
                                             </div>
-                                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                                                 <button title={item.active ? 'Deactivate' : 'Activate'} onClick={() => toggleCareerActive(item)} className="p-2 hover:bg-gray-100 transition-colors">
-                                                    {item.active ? <Eye size={14} className="text-primary" /> : <EyeSlash size={14} className="text-gray-400" />}
+                                                    {item.active ? <Eye size={14} className="text-black" weight="fill" /> : <EyeSlash size={14} className="text-black" weight="fill" />}
                                                 </button>
                                                 <button title="Edit" onClick={() => { setEditingCareer(item); setShowCareerForm(true); }} className="p-2 hover:bg-gray-100 transition-colors">
-                                                    <Pencil size={14} className="text-gray-500" />
+                                                    <Pencil size={14} className="text-black" weight="fill" />
                                                 </button>
                                                 <button title="Delete" onClick={() => setDeleteConfirm({ type: 'career', id: item.id })} className="p-2 hover:bg-red-50 transition-colors">
-                                                    <Trash size={14} className="text-gray-400 hover:text-red-500 transition-colors" />
+                                                    <Trash size={14} className="text-black hover:text-red-500 transition-colors" weight="fill" />
                                                 </button>
                                             </div>
                                         </motion.div>

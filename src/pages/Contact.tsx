@@ -90,7 +90,7 @@ const Contact = () => {
     `bg-white/8 border-white/15 text-white placeholder:text-white/25 rounded-none focus-visible:ring-0 focus-visible:border-primary transition-colors duration-200 ${err ? 'border-red-400' : ''}`;
 
   return (
-    <div className="min-h-screen flex flex-col min-w-0 overflow-x-hidden">
+    <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
       <main className="flex-1">
 
@@ -106,16 +106,16 @@ const Contact = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
           <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 md:px-8">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">
+                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5">
                   Calm Mountain Transport
                 </p>
-                <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold font-heading text-white uppercase tracking-tight leading-none mb-5">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white uppercase tracking-tight leading-tight mb-5 md:mb-6">
                   Request<br />a Quote
                 </h1>
                 <motion.div
@@ -168,21 +168,21 @@ const Contact = () => {
                   <h3 className="text-sm font-bold font-heading text-white mb-6 flex items-center gap-3 uppercase tracking-wide">
                     <Buildings className="w-4 h-4 text-primary shrink-0" weight="fill" />
                     Calm Mountain Transport Limited
-                  </h3>
+                      </h3>
                   <div className="space-y-4 text-white/60 pl-7 text-sm font-body">
-                    <p className="flex items-start gap-3">
+                        <p className="flex items-start gap-3">
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" weight="fill" />
                       <span>Ndola, Copperbelt Province<br />Zambia</span>
-                    </p>
-                    <p className="flex items-center gap-3">
+                        </p>
+                        <p className="flex items-center gap-3">
                       <Phone className="w-4 h-4 text-primary shrink-0" weight="fill" />
                       <span>+260 — (to be updated)</span>
-                    </p>
-                    <p className="flex items-center gap-3">
+                        </p>
+                        <p className="flex items-center gap-3">
                       <Envelope className="w-4 h-4 text-primary shrink-0" weight="fill" />
                       <span>info@calmmt.co.zm</span>
-                    </p>
-                  </div>
+                        </p>
+                      </div>
                 </motion.div>
 
                 {/* Map */}
@@ -302,7 +302,7 @@ const Contact = () => {
                             onChange={handleChange('weightVolume')}
                             className={fieldClass()}
                           />
-                        </div>
+                    </div>
                         <div className="space-y-1.5">
                           <label className="text-[10px] font-heading font-bold text-white/50 uppercase tracking-wider">Required Timeframe</label>
                           <Input
@@ -311,8 +311,8 @@ const Contact = () => {
                             onChange={handleChange('timeframe')}
                             className={fieldClass()}
                           />
-                        </div>
-                      </div>
+                </div>
+              </div>
 
                       {/* Contact */}
                       <div className="grid md:grid-cols-2 gap-4">

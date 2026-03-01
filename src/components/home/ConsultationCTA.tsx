@@ -6,15 +6,15 @@ import { ArrowRight, Truck } from 'phosphor-react';
 
 export const ConsultationCTA = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px", amount: 0.2 });
 
   return (
     <motion.section
       ref={ref}
-      className="flex flex-col lg:flex-row"
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.7 }}
+      className="flex flex-col lg:flex-row overflow-hidden"
+      initial={{ opacity: 0, y: 60 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Yellow text panel */}
       <div className="lg:w-3/5 px-10 py-24 md:px-20 flex flex-col justify-center bg-primary">

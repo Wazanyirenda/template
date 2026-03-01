@@ -19,7 +19,7 @@ const queryClient = new QueryClient();
 const AppRoutes = () => {
   usePageTracking();
   return (
-    <div className="min-w-0 overflow-x-hidden">
+    <div className="min-w-0">
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />

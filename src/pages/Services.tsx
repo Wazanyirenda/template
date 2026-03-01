@@ -410,8 +410,8 @@ const AirFreightSection = () => {
             <img
               src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=900"
               alt="Air freight cargo"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-            />
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
               <p className="text-white font-heading font-bold text-xs uppercase tracking-wider">Weekly Consolidation Flights</p>
               <p className="text-white/60 text-xs mt-1">Direct to Kenneth Kaunda Intl Airport, Lusaka</p>
@@ -621,7 +621,7 @@ const ServicesCTA = () => {
           >
             <Truck className="w-40 h-40 text-white" weight="fill" />
           </motion.div>
-        </div>
+    </div>
       </motion.div>
     </section>
   );
@@ -631,7 +631,7 @@ const ServicesCTA = () => {
 
 const Services = () => {
   return (
-    <div className="min-h-screen flex flex-col min-w-0 overflow-x-hidden">
+    <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
       <main className="flex-1">
         {/* HERO */}
@@ -645,11 +645,11 @@ const Services = () => {
             transition={{ duration: 1.6, ease: "easeOut" }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
-          <div className="absolute inset-0 flex items-center pt-20">
+          <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
             <div className="container mx-auto px-4 md:px-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
                 <motion.p
-                  className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5"
+                  className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
@@ -657,7 +657,7 @@ const Services = () => {
                   Calm Mountain Transport
                 </motion.p>
                 <motion.h1
-                  className="text-4xl md:text-5xl lg:text-7xl font-bold font-heading text-white uppercase tracking-tight leading-none mb-6"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white uppercase tracking-tight leading-tight mb-5 md:mb-6"
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.5 }}
