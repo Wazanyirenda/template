@@ -1,18 +1,17 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { CheckCircle, Target, Eye, Trophy, Star, ChatCircle, ArrowRight } from 'phosphor-react';
+import { CheckCircle, Target, Eye, Trophy, Star, ChatCircle, ArrowRight, ShieldCheck } from 'phosphor-react';
 import { Link } from 'react-router-dom';
 
 const values = [
-  { icon: CheckCircle, title: "Reliability", description: "Commitments are honored. If we agree to a delivery date, we work backwards from that date to make sure we meet it." },
-  { icon: ChatCircle, title: "Accountability", description: "We take full responsibility for the journey — from the moment cargo is collected to the moment it is delivered and signed for." },
-  { icon: Star, title: "Safety", description: "Cargo integrity and responsible transport practices are non-negotiable. We handle every shipment as if it were our own." },
-  { icon: CheckCircle, title: "Clarity", description: "We communicate clearly. No confusion, no chasing for updates. You will always know where your cargo stands." },
-  { icon: Trophy, title: "Professionalism", description: "We represent our clients' interests at every stage — with drivers, at borders, and at the point of delivery." },
-  { icon: Eye, title: "Transparency", description: "Clear pricing, honest timelines, and open communication. No hidden charges. No surprises." },
+  { icon: CheckCircle, title: "Reliability", description: "We honor commitments and treat delivery timelines as operational targets that must be met." },
+  { icon: ChatCircle, title: "Accountability", description: "We take full responsibility for each shipment from collection through final delivery." },
+  { icon: ShieldCheck, title: "Safety", description: "We prioritize cargo integrity and enforce responsible transport practices at every stage." },
+  { icon: Eye, title: "Transparency", description: "We maintain honest timelines, clear pricing, and open communication with no hidden conditions." },
+  { icon: Star, title: "Representation", description: "We provide clear updates so clients always know the status of their shipments." },
+  { icon: Trophy, title: "Integrity", description: "We represent client interests effectively at dispatch points, border posts, and delivery locations." },
 ];
 
 const useSectionInView = () => {
@@ -37,10 +36,10 @@ const EditorialIntro = () => {
               Calm Mountain<br />Transport<br />Limited
             </p>
             <div className="w-8 h-0.5 bg-primary mt-4" />
-            <div className="mt-8 grid grid-cols-3 gap-4">
-              {[["7", "Countries"], ["Import & Export", "Both Directions"], ["Structured", "Process"]].map(([val, lbl]) => (
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              {[["14 Apr 2023", "Incorporated"], ["9+", "Countries"], ["20-30t", "Capacity"], ["RTSA", "Regulated"]].map(([val, lbl]) => (
                 <div key={lbl}>
-                  <p className="font-heading font-bold text-foreground text-2xl leading-none">{val}</p>
+                  <p className="font-heading font-bold text-foreground text-xl leading-none">{val}</p>
                   <p className="text-muted-foreground text-[10px] uppercase tracking-wider mt-1">{lbl}</p>
                 </div>
               ))}
@@ -53,10 +52,13 @@ const EditorialIntro = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-2xl">
-              Calm Mountain Transport Limited was established to solve a specific problem: businesses in Southern and Eastern Africa need a transport partner they can actually rely on — one that plans ahead, communicates clearly, and delivers on time.
+              Calm Mountain Transport Limited is a Zambian registered transport and logistics company operating under Road Transport and Safety Agency regulations. We provide haulage and logistics services within Zambia and across cross-border routes in the SADC region.
             </p>
             <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-2xl mt-4">
-              We specialise in cross-border commercial cargo transport, customs clearance, freight forwarding, and inland haulage. By focusing on doing these services well, we give our clients consistent performance they can build their supply chains around.
+              Our operations are designed to support industries that rely heavily on road freight transport, including mining, agriculture, construction, and trade. We were established to provide safe, timely, and cost-effective transport services for both corporate and individual clients.
+            </p>
+            <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-2xl mt-4">
+              Our long-term strategy includes scaling operations, strengthening regional routes, and introducing enhanced logistics capabilities.
             </p>
           </motion.div>
         </div>
@@ -70,9 +72,9 @@ const MissionVisionSection = () => {
   return (
     <section ref={ref} className="grid md:grid-cols-3">
       {[
-        { icon: Target, eyebrow: "Reliable", title: "Reliable Logistics Service", bg: "bg-white", text: "We are a logistics partner built for reliability. You can count on us to deliver structured, on-time service every time.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
-        { icon: Eye, eyebrow: "Dependable", title: "Dependable Freight Provider", bg: "bg-secondary", text: "We bring structured logistics and clear communication to cross-border freight. You can depend on us for reliable, on-time service across Southern and Eastern Africa.", textColor: "text-white/70", headColor: "text-white", labelColor: "text-primary" },
-        { icon: Trophy, eyebrow: "Dedicated", title: "Dedicated Team of Staff", bg: "bg-white", text: "Our dedicated team of staff are key assets to our company. They do their job at the best of their ability to make sure you get the best experience when doing business with us.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
+        { icon: Eye, eyebrow: "Vision", title: "Leading and Trusted", bg: "bg-white", text: "To become a leading and trusted transport and logistics service provider in Zambia and across the region.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
+        { icon: Target, eyebrow: "Mission", title: "Reliable, Safe, Cost-Effective", bg: "bg-secondary", text: "To provide reliable, safe, and cost-effective transportation services while maintaining high standards of professionalism, efficiency, and accountability.", textColor: "text-white/70", headColor: "text-white", labelColor: "text-primary" },
+        { icon: Trophy, eyebrow: "Customer Promise", title: "Satisfying Customers", bg: "bg-white", text: "Satisfying customers is key to our success. We focus on consistent service, clear communication, and accountable delivery.", textColor: "text-gray-600", headColor: "text-black", labelColor: "text-zinc-500" },
       ].map((item, i) => (
         <motion.div
           key={item.title}
@@ -83,7 +85,7 @@ const MissionVisionSection = () => {
         >
           <p className={`${item.labelColor} font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5`}>{item.eyebrow}</p>
           <div className={`w-10 h-10 flex items-center justify-center mb-6 ${i === 1 ? 'bg-primary/10' : 'bg-black'}`}>
-            <item.icon className={`w-5 h-5 text-primary`} weight="fill" />
+            <item.icon className="w-5 h-5 text-primary" weight="fill" />
           </div>
           <h3 className={`text-2xl font-bold font-heading uppercase leading-tight mb-4 ${item.headColor}`}>{item.title}</h3>
           <div className="w-10 h-0.5 bg-primary mb-6" />
@@ -94,8 +96,14 @@ const MissionVisionSection = () => {
   );
 };
 
-const ApproachSection = () => {
+const QualitySection = () => {
   const { ref, isInView } = useSectionInView();
+  const groups = [
+    { title: "Objectives", items: ["Deliver cargo on time and as scheduled", "Maintain clear and consistent communication with clients", "Ensure safe handling and transport of all shipments", "Continuously improve operational efficiency"] },
+    { title: "Aspirations", items: ["Be the preferred logistics partner for cross-border trade", "Achieve consistent on-time delivery performance", "Build long-term client relationships based on trust", "Maintain professionalism across all operational touchpoints"] },
+    { title: "Strengths", items: ["Structured logistics process", "Strong regional coordination", "Reliable execution and planning", "Transparent communication"] },
+  ];
+
   return (
     <section ref={ref} className="grid lg:grid-cols-[5fr_6fr] bg-muted/30 overflow-hidden">
       <motion.div
@@ -105,8 +113,8 @@ const ApproachSection = () => {
         transition={{ duration: 0.8 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=900"
-          alt="Our transport approach"
+          src="/images/truck1.jpg"
+          alt="Calm Mountain Transport operations"
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
         />
         <motion.div
@@ -115,13 +123,9 @@ const ApproachSection = () => {
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <p className="font-heading font-bold text-2xl text-black leading-none">7</p>
-          <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Countries Served</p>
+          <p className="font-heading font-bold text-2xl text-black leading-none">RTSA</p>
+          <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Regulated Operations</p>
         </motion.div>
-        <div className="absolute bottom-4 left-6 flex gap-2">
-          <span className="w-2.5 h-2.5 bg-primary block" />
-          <span className="w-2.5 h-2.5 bg-secondary block" />
-        </div>
       </motion.div>
       <motion.div
         className="flex flex-col justify-center px-10 py-24 md:px-16"
@@ -129,21 +133,29 @@ const ApproachSection = () => {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Our Approach</p>
+        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Quality Policy</p>
         <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-4">
-          Cross-Border Transport<br />That Works
+          Structured Service<br />Continuous Improvement
         </h2>
         <div className="w-14 h-0.5 bg-primary mb-8" />
-        <div className="space-y-4 text-gray-600 text-sm leading-relaxed font-body mb-10">
-          <p>Every shipment we handle goes through the same structured process — route planning, scheduled departure, coordinated border crossing, and confirmed delivery.</p>
-          <p>We do not improvise. We plan, we communicate, and we execute. That consistency is what our clients come back for.</p>
+        <p className="text-gray-600 text-sm leading-relaxed font-body mb-8">
+          Calm Mountain Transport Limited is committed to maintaining high standards of service through structured processes and continuous improvement.
+        </p>
+        <div className="space-y-6">
+          {groups.map((group) => (
+            <div key={group.title}>
+              <h3 className="font-heading font-bold text-black text-xs uppercase tracking-wider mb-3">{group.title}</h3>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {group.items.map((item) => (
+                  <p key={item} className="text-gray-600 text-xs leading-relaxed font-body flex gap-2">
+                    <span className="w-1.5 h-1.5 mt-1.5 bg-primary shrink-0" />
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-        <Link
-          to="/services"
-          className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border-b border-black pb-0.5 hover:text-primary hover:border-primary transition-colors group self-start"
-        >
-          See How It Works <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" weight="bold" />
-        </Link>
       </motion.div>
     </section>
   );
@@ -160,7 +172,7 @@ const CoreValuesSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">What We Stand For</p>
+          <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Corporate Culture - STRIVE</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-white uppercase leading-tight">Our Core Values</h2>
           <div className="w-14 h-0.5 bg-primary mt-6" />
         </motion.div>
@@ -186,6 +198,40 @@ const CoreValuesSection = () => {
   );
 };
 
+const ComplianceSection = () => {
+  const { ref, isInView } = useSectionInView();
+  const compliance = [
+    ["Registered", "Republic of Zambia - Companies Act, 2017 (Act No. 10 of 2017)"],
+    ["Registration No.", "120230049239"],
+    ["TPIN", "2001215075"],
+    ["Regulator", "Road Transport and Safety Agency (RTSA)"],
+  ];
+
+  return (
+    <section ref={ref} className="py-20 bg-white border-t border-border">
+      <div className="container mx-auto px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl"
+        >
+          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Legal & Compliance</p>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-8">Company Details</h2>
+          <div className="grid sm:grid-cols-2 gap-px bg-border">
+            {compliance.map(([label, value]) => (
+              <div key={label} className="bg-white p-6">
+                <p className="text-black/40 text-[10px] font-heading uppercase tracking-wider mb-2">{label}</p>
+                <p className="text-black text-sm font-body leading-relaxed">{value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
 const AboutCTA = () => {
   const { ref, isInView } = useSectionInView();
   return (
@@ -198,10 +244,10 @@ const AboutCTA = () => {
       >
         <p className="font-heading font-bold text-xs uppercase tracking-[0.3em] text-black/50 mb-6">Work With Us</p>
         <h2 className="text-4xl md:text-5xl font-bold font-heading text-black uppercase leading-tight mb-6">
-          Ready to<br />Work With Us?
+          Ready to<br />Move Cargo?
         </h2>
         <p className="text-black/70 text-sm font-body mb-10 max-w-md leading-relaxed">
-          Let's talk about your cargo requirements. We'll come back to you with a clear, structured transport proposal.
+          Tell us your route, cargo type, and timeframe. We will respond with a clear transport proposal.
         </p>
         <Link
           to="/contact"
@@ -217,8 +263,8 @@ const AboutCTA = () => {
         transition={{ duration: 0.8, delay: 0.15 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=900"
-          alt="About"
+          src="/images/about-hero.jpg"
+          alt="About Calm Mountain Transport"
           className="w-full h-full object-cover opacity-25"
         />
         <div className="absolute inset-0 flex items-center justify-center">
@@ -234,10 +280,9 @@ const About = () => {
     <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
       <main className="flex-1">
-        {/* HERO */}
         <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=2070"
+            src="/images/about-hero.jpg"
             alt="About Calm Mountain Transport"
             className="w-full h-full object-cover opacity-35"
           />
@@ -251,17 +296,17 @@ const About = () => {
                 </h1>
                 <div className="w-16 h-0.5 bg-primary mb-6" />
                 <p className="text-lg text-white/70 max-w-xl font-light leading-relaxed">
-                  A cargo transport company built on one commitment: move your goods across borders, on time, every time.
+                  A Zambian transport and logistics company built on disciplined planning, clear communication, and consistent execution.
                 </p>
               </motion.div>
             </div>
           </div>
-          <div className="absolute bottom-8 right-8 md:right-16 text-white/30 font-heading text-xs tracking-widest"></div>
         </section>
         <EditorialIntro />
         <MissionVisionSection />
-        <ApproachSection />
+        <QualitySection />
         <CoreValuesSection />
+        <ComplianceSection />
         <AboutCTA />
       </main>
       <Footer />

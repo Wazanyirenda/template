@@ -20,7 +20,7 @@ export const ConsultationCTA = () => {
       <div className="lg:w-3/5 px-10 py-24 md:px-20 flex flex-col justify-center bg-primary">
         <p className="font-heading font-bold text-xs uppercase tracking-[0.3em] text-black/50 mb-6">Get Started</p>
         <h2 className="text-4xl md:text-5xl font-bold font-heading text-black uppercase leading-tight mb-6">
-          Have Cargo<br />That Needs<br />to Move?
+          Need Reliable<br />Road Freight?
         </h2>
         <p className="text-black/70 text-sm font-body mb-10 max-w-md leading-relaxed">
           Tell us where it needs to go, what it is, and when you need it there. We will come back to you with a clear transport proposal.
@@ -36,7 +36,7 @@ export const ConsultationCTA = () => {
       {/* Dark image panel */}
       <div className="lg:w-2/5 h-64 lg:h-auto overflow-hidden bg-secondary relative">
         <img
-          src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=900"
+          src="/images/truck3.jpg"
           alt="Transport operations"
           className="w-full h-full object-cover opacity-20"
         />

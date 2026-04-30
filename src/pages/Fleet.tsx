@@ -1,18 +1,28 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Truck, ArrowRight, Wrench, ShieldCheck, NavigationArrow } from 'phosphor-react';
-import { supabase } from '@/lib/supabase';
+import { Truck, ArrowRight, Wrench, ShieldCheck, NavigationArrow, Gauge } from 'phosphor-react';
+
+const fleet = [
+  {
+    category: "Heavy-Duty Haulage Trucks",
+    eyebrow: "Initial Fleet",
+    description: "A heavy-duty haulage fleet selected to support long-distance, domestic, and cross-border cargo movement.",
+    capacity: "20-30 tons",
+    body_type: "Heavy-duty",
+    routes: "Zambia / SADC",
+    accent: "bg-primary"
+  },
+];
 
 const capabilities = [
-  { icon: Truck, title: "5+ Trucks", desc: "A maintained fleet of over 5 vehicles spanning heavy haulage, medium, and light commercial classes." },
-  { icon: Wrench, title: "In-House Workshop", desc: "A dedicated workshop staffed by qualified mechanics ensures fleet reliability. Road breakdowns are recovered by our own recovery vehicle." },
-  { icon: NavigationArrow, title: "Satellite Tracking", desc: "All trucks are fitted with GPS satellite tracking. Real-time location reports are available for active shipments on request." },
-  { icon: ShieldCheck, title: "Vetted Drivers", desc: "All drivers are vetted before employment, carry the appropriate licenses, and are supplied with required safety and personal protective equipment." },
-  { icon: Truck, title: "Yard & Parking", desc: "3,000 sqm of secured yard space for fleet parking and cargo staging, with 2,120 sqm of bonded warehousing adjacent." },
+  { icon: Truck, title: "Heavy-Duty Haulage Fleet", desc: "The company operates trucks designed for long-distance, domestic, and cross-border haulage." },
+  { icon: Gauge, title: "20 to 30 Ton Capacity", desc: "Each vehicle is intended to support cargo loads within the 20 to 30 ton range." },
+  { icon: NavigationArrow, title: "Route Planning", desc: "Key routes include Lusaka to Ndola, Lusaka to Kitwe, Lusaka to Livingstone, and cross-border routes into Zimbabwe and Tanzania." },
+  { icon: ShieldCheck, title: "Driver Monitoring", desc: "Daily operations include driver monitoring, delivery confirmation, and clear communication with clients." },
+  { icon: Wrench, title: "Maintenance Tracking", desc: "Maintenance tracking is part of the operating discipline used to protect vehicle reliability and cargo delivery timelines." },
 ];
 
 const useSection = () => {
@@ -34,22 +44,16 @@ const FleetClassesSection = ({ fleet }: { fleet: FleetDisplayItem[] }) => {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Vehicle Classes</p>
+          <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Fleet</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
             Our Fleet
           </h2>
           <div className="w-14 h-0.5 bg-primary mt-6 mb-6" />
           <p className="text-gray-500 text-sm max-w-2xl leading-relaxed font-body">
-            Calm Mountain Transport operates a diverse fleet of over 5 vehicles. Each class is matched to a different cargo type and route requirement — from heavy cross-border loads to specialized cargo.
+            Calm Mountain Transport operates heavy-duty haulage trucks with 20 to 30 tons of carrying capacity per vehicle.
           </p>
         </motion.div>
 
-        {fleet.length === 0 ? (
-          <div className="bg-white border border-dashed border-gray-200 p-16 text-center">
-            <Truck className="w-12 h-12 text-gray-300 mx-auto mb-4" weight="fill" />
-            <p className="text-gray-500 font-body">No vehicle classes listed at the moment. Check back soon.</p>
-          </div>
-        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
           {fleet.map((item, i) => (
             <motion.div
@@ -83,7 +87,6 @@ const FleetClassesSection = ({ fleet }: { fleet: FleetDisplayItem[] }) => {
             </motion.div>
           ))}
         </div>
-        )}
       </div>
     </section>
   );
@@ -102,7 +105,7 @@ const FleetCapabilitiesSection = () => {
         >
           <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Operations</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-white uppercase leading-tight">
-            Fleet Capabilities
+            Fleet & Operations
           </h2>
           <div className="w-14 h-0.5 bg-primary mt-6" />
         </motion.div>
@@ -139,7 +142,7 @@ const FleetImageSection = () => {
         transition={{ duration: 0.8 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=900"
+          src="/images/truck1.jpg"
           alt="Calm Mountain Transport fleet"
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
         />
@@ -149,28 +152,24 @@ const FleetImageSection = () => {
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <p className="font-heading font-bold text-2xl text-black leading-none">5+</p>
-          <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Active Vehicles</p>
+          <p className="font-heading font-bold text-2xl text-black leading-none">20-30t</p>
+          <p className="text-xs font-heading font-semibold uppercase tracking-wider text-black/70 mt-1">Per Vehicle</p>
         </motion.div>
-        <div className="absolute bottom-4 left-6 flex gap-2">
-          <span className="w-2.5 h-2.5 bg-primary block" />
-          <span className="w-2.5 h-2.5 bg-secondary block" />
-        </div>
       </motion.div>
-    <motion.div
+      <motion.div
         className="flex flex-col justify-center px-10 py-24 md:px-16"
         initial={{ opacity: 0, x: 40 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
+        animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Maintained & Ready</p>
+        <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Daily Control</p>
         <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight mb-4">
-          A Fleet Built<br />for the Corridor
+          Planned, Monitored,<br />Confirmed
         </h2>
         <div className="w-14 h-0.5 bg-primary mb-8" />
         <div className="space-y-4 text-gray-600 text-sm leading-relaxed font-body mb-10">
-          <p>Every vehicle in our fleet is maintained by our in-house workshop team. We do not wait for breakdowns — we prevent them through scheduled servicing and regular inspections.</p>
-          <p>Our recovery vehicle is always on standby, and drivers carry direct contact lines so that any issue on the road is resolved quickly and without delay to your cargo.</p>
+          <p>Daily operations include dispatch planning, driver monitoring, fuel control, delivery confirmation, and maintenance tracking.</p>
+          <p>This operating rhythm supports safer cargo movement, more predictable delivery, and stronger accountability from collection to final handover.</p>
         </div>
         <Link
           to="/contact"
@@ -183,76 +182,14 @@ const FleetImageSection = () => {
   );
 };
 
-const FleetCTA = () => {
-  const { ref, isInView } = useSection();
-  return (
-    <section ref={ref} className="flex flex-col lg:flex-row">
-      <motion.div
-        className="lg:w-3/5 px-10 py-24 md:px-20 flex flex-col justify-center bg-primary"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.7 }}
-      >
-        <p className="font-heading font-bold text-xs uppercase tracking-[0.3em] text-black/50 mb-6">Get in Touch</p>
-        <h2 className="text-4xl md:text-5xl font-bold font-heading text-black uppercase leading-tight mb-6">
-          Need a<br />Truck?
-        </h2>
-        <p className="text-black/70 text-sm font-body mb-10 max-w-md leading-relaxed">
-          Tell us your cargo requirements and route. We'll confirm the appropriate vehicle class and arrange a quotation.
-        </p>
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2 text-xs font-heading font-bold uppercase tracking-[0.2em] text-black border border-black px-8 py-3.5 hover:bg-black hover:text-primary transition-all duration-300 self-start"
-        >
-          Request a Quote <ArrowRight className="w-3.5 h-3.5" weight="bold" />
-        </Link>
-      </motion.div>
-      <motion.div
-        className="lg:w-2/5 h-64 lg:h-auto overflow-hidden bg-secondary relative"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.15 }}
-      >
-        <img
-          src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=900"
-          alt="Fleet"
-          className="w-full h-full object-cover opacity-20"
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Truck className="w-32 h-32 text-white/10" weight="fill" />
-        </div>
-    </motion.div>
-    </section>
-  );
-};
-
 const Fleet = () => {
-  const [fleet, setFleet] = useState<FleetDisplayItem[]>([]);
-
-  useEffect(() => {
-    const fetchFleet = async () => {
-      const { data, error } = await supabase
-        .from('fleet')
-        .select('category, eyebrow, description, capacity, body_type, routes, accent')
-        .eq('active', true)
-        .order('sort_order', { ascending: true });
-
-      if (!error && data) {
-        setFleet(data as FleetDisplayItem[]);
-      }
-    };
-    fetchFleet();
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
       <main className="flex-1">
-
-        {/* ── HERO ── */}
         <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=2070"
+            src="/images/truck2.jpg"
             alt="Calm Mountain Transport fleet"
             className="w-full h-full object-cover opacity-40"
           />
@@ -260,13 +197,13 @@ const Fleet = () => {
           <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
             <div className="container mx-auto px-4 md:px-8">
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5">5+ Vehicles</p>
+                <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4 md:mb-5">Heavy-Duty Haulage</p>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white uppercase tracking-tight leading-tight mb-5 md:mb-6">
                   Our<br />Fleet
                 </h1>
                 <div className="w-16 h-0.5 bg-primary mb-6" />
                 <p className="text-lg text-white/70 max-w-xl font-light leading-relaxed">
-                  A maintained fleet of heavy haulage, medium, and light commercial vehicles — ready for cross-border and inland cargo.
+                  Heavy-duty haulage trucks with 20 to 30 tons of capacity per vehicle.
                 </p>
               </motion.div>
             </div>
@@ -276,8 +213,6 @@ const Fleet = () => {
         <FleetClassesSection fleet={fleet} />
         <FleetCapabilitiesSection />
         <FleetImageSection />
-        <FleetCTA />
-
       </main>
       <Footer />
     </div>

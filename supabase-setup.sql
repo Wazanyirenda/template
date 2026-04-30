@@ -109,6 +109,18 @@ ALTER TABLE fleet      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE page_views ENABLE ROW LEVEL SECURITY;
 
 -- PUBLIC READ — anyone can read published news, active careers, active fleet
+DROP POLICY IF EXISTS "Anon full access news" ON news;
+DROP POLICY IF EXISTS "Anon full access careers" ON careers;
+DROP POLICY IF EXISTS "Anon full access fleet" ON fleet;
+DROP POLICY IF EXISTS "Anon full access page views" ON page_views;
+DROP POLICY IF EXISTS "Dashboard can manage news" ON news;
+DROP POLICY IF EXISTS "Dashboard can manage careers" ON careers;
+DROP POLICY IF EXISTS "Dashboard can manage fleet" ON fleet;
+DROP POLICY IF EXISTS "Dashboard can read page views" ON page_views;
+DROP POLICY IF EXISTS "Dashboard upload media" ON storage.objects;
+DROP POLICY IF EXISTS "Dashboard update media" ON storage.objects;
+DROP POLICY IF EXISTS "Dashboard delete media" ON storage.objects;
+
 CREATE POLICY "Public can read published news"
     ON news FOR SELECT
     USING (published = true);
@@ -121,21 +133,22 @@ CREATE POLICY "Public can read active fleet"
     ON fleet FOR SELECT
     USING (active = true);
 
--- ADMIN FULL ACCESS — anon key gets full CRUD
--- (For a production app you'd use authenticated roles + auth,
---  but since this CMS has no auth gate, anon gets full access)
-CREATE POLICY "Anon full access news"
+-- DASHBOARD ACCESS - authenticated users can manage CMS content.
+CREATE POLICY "Dashboard can manage news"
     ON news FOR ALL
+    TO authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Anon full access careers"
+CREATE POLICY "Dashboard can manage careers"
     ON careers FOR ALL
+    TO authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Anon full access fleet"
+CREATE POLICY "Dashboard can manage fleet"
     ON fleet FOR ALL
+    TO authenticated
     USING (true)
     WITH CHECK (true);
 
@@ -144,10 +157,11 @@ CREATE POLICY "Public can insert page views"
     ON page_views FOR INSERT
     WITH CHECK (true);
 
-CREATE POLICY "Anon full access page views"
-    ON page_views FOR ALL
+CREATE POLICY "Dashboard can read page views"
+    ON page_views FOR SELECT
+    TO authenticated
     USING (true)
-    WITH CHECK (true);
+;
 
 
 -- ── 7. STORAGE BUCKET (for news article images) ─────────────
@@ -161,18 +175,21 @@ CREATE POLICY "Public read media"
     USING (bucket_id = 'media');
 
 -- Allow anon to upload files to the media bucket
-CREATE POLICY "Anon upload media"
+CREATE POLICY "Dashboard upload media"
     ON storage.objects FOR INSERT
+    TO authenticated
     WITH CHECK (bucket_id = 'media');
 
 -- Allow anon to update/delete their uploaded files
-CREATE POLICY "Anon update media"
+CREATE POLICY "Dashboard update media"
     ON storage.objects FOR UPDATE
+    TO authenticated
     USING (bucket_id = 'media')
     WITH CHECK (bucket_id = 'media');
 
-CREATE POLICY "Anon delete media"
+CREATE POLICY "Dashboard delete media"
     ON storage.objects FOR DELETE
+    TO authenticated
     USING (bucket_id = 'media');
 
 

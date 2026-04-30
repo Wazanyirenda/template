@@ -11,12 +11,12 @@ interface SEOProps {
 }
 
 const SITE_NAME = 'Calm Mountain Transport Limited';
-const BASE_URL = 'https://calmmt.co.zm';
+const BASE_URL = 'https://www.calmmountaintransport.com';
 const DEFAULT_DESCRIPTION =
-    'Calm Mountain Transport Limited — Cross-border cargo transport, customs clearance, and freight forwarding across Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa. Based in Ndola, Zambia.';
+    'Calm Mountain Transport Limited provides reliable road freight, haulage, distribution, cross-border transportation, and logistics services across Zambia and the SADC region.';
 const DEFAULT_IMAGE = `${BASE_URL}/logo.png`;
 const DEFAULT_KEYWORDS =
-    'cargo transport Zambia, cross-border logistics Africa, customs clearance Zambia, freight forwarding Ndola, truck transport Southern Africa, logistics company Zambia, cargo transport Tanzania, Malawi freight, Uganda cargo, Rwanda logistics, South Africa transport corridor';
+    'road freight Zambia, transport company Zambia, logistics company Zambia, haulage Zambia, cross-border transport SADC, cargo transport Ndola, freight transport Copperbelt, bulk cargo transport, general cargo transport';
 
 export const SEO = ({
     title,
@@ -29,18 +29,15 @@ export const SEO = ({
 }: SEOProps) => {
     const fullTitle = title
         ? `${title} | ${SITE_NAME}`
-        : `${SITE_NAME} | Cross-Border Cargo Transport in Southern & Eastern Africa`;
+        : `${SITE_NAME} | On Time Every Time`;
 
     useEffect(() => {
-        // Title
         document.title = fullTitle;
 
-        // Helper to set or create a meta tag
         const setMeta = (selector: string, content: string) => {
             let el = document.querySelector<HTMLMetaElement>(selector);
             if (!el) {
                 el = document.createElement('meta');
-                // Parse attribute from selector, e.g. name="description"
                 const nameMatch = selector.match(/\[name="(.+?)"\]/);
                 const propMatch = selector.match(/\[property="(.+?)"\]/);
                 if (nameMatch) el.setAttribute('name', nameMatch[1]);
@@ -60,14 +57,12 @@ export const SEO = ({
             el.setAttribute('href', href);
         };
 
-        // Core meta
         setMeta('[name="description"]', description);
         setMeta('[name="keywords"]', keywords);
         setMeta('[name="robots"]', 'index, follow');
         setMeta('[name="author"]', SITE_NAME);
         setMeta('[name="theme-color"]', '#f2e70a');
 
-        // Open Graph
         setMeta('[property="og:type"]', ogType);
         setMeta('[property="og:site_name"]', SITE_NAME);
         setMeta('[property="og:title"]', fullTitle);
@@ -77,16 +72,13 @@ export const SEO = ({
         setMeta('[property="og:image:height"]', '630');
         if (canonical) setMeta('[property="og:url"]', `${BASE_URL}${canonical}`);
 
-        // Twitter / X card
         setMeta('[name="twitter:card"]', 'summary_large_image');
         setMeta('[name="twitter:title"]', fullTitle);
         setMeta('[name="twitter:description"]', description);
         setMeta('[name="twitter:image"]', ogImage);
 
-        // Canonical link
         if (canonical) setLink('canonical', `${BASE_URL}${canonical}`);
 
-        // JSON-LD structured data
         const existingScript = document.getElementById('structured-data');
         if (existingScript) existingScript.remove();
 
@@ -102,8 +94,6 @@ export const SEO = ({
     return null;
 };
 
-// ── Pre-built structured data helpers ──────────────────────────
-
 export const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -113,15 +103,17 @@ export const organizationSchema = {
     description: DEFAULT_DESCRIPTION,
     address: {
         '@type': 'PostalAddress',
+        streetAddress: 'No. 7 Chinika Road, Northrise',
         addressLocality: 'Ndola',
-        addressRegion: 'Copperbelt Province',
+        addressRegion: 'Copperbelt',
         addressCountry: 'ZM',
     },
     contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer service',
-        email: 'info@calmmt.co.zm',
-        areaServed: ['ZM', 'TZ', 'MW', 'KE', 'UG', 'RW', 'ZA'],
+        telephone: '+260761370582',
+        email: 'info@calmmountaintransport.com',
+        areaServed: ['ZM', 'ZW', 'TZ', 'BW', 'MW', 'ZA', 'MZ', 'AO', 'NA'],
     },
     sameAs: [],
 };
@@ -129,7 +121,7 @@ export const organizationSchema = {
 export const freightServiceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Cross-Border Cargo Transport',
+    name: 'Road Freight and Logistics Services',
     provider: {
         '@type': 'Organization',
         name: 'Calm Mountain Transport Limited',
@@ -137,23 +129,25 @@ export const freightServiceSchema = {
     serviceType: 'Freight Transport',
     areaServed: [
         { '@type': 'Country', name: 'Zambia' },
+        { '@type': 'Country', name: 'Zimbabwe' },
         { '@type': 'Country', name: 'Tanzania' },
+        { '@type': 'Country', name: 'Botswana' },
         { '@type': 'Country', name: 'Malawi' },
-        { '@type': 'Country', name: 'Kenya' },
-        { '@type': 'Country', name: 'Uganda' },
-        { '@type': 'Country', name: 'Rwanda' },
         { '@type': 'Country', name: 'South Africa' },
+        { '@type': 'Country', name: 'Mozambique' },
+        { '@type': 'Country', name: 'Angola' },
+        { '@type': 'Country', name: 'Namibia' },
     ],
-    description:
-        'Full-service cross-border cargo transport, customs clearance, and freight forwarding solutions across Southern and Eastern Africa.',
+    description: DEFAULT_DESCRIPTION,
     hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Transport Services',
         itemListElement: [
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Cross-Border Road Haulage' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Customs Clearance' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Air Freight Forwarding' } },
-            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Warehousing & Storage' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Long Distance Haulage' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Local Distribution' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Contract Transport Services' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Cross-Border Transportation' } },
+            { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Bulk and General Cargo Transport' } },
         ],
     },
 };
@@ -165,13 +159,13 @@ export const localBusinessSchema = {
     name: 'Calm Mountain Transport Limited',
     image: `${BASE_URL}/logo.png`,
     url: BASE_URL,
-    telephone: '+260-000-000000',
-    email: 'info@calmmt.co.zm',
+    telephone: '+260761370582',
+    email: 'info@calmmountaintransport.com',
     address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Ndola',
+        streetAddress: 'No. 7 Chinika Road, Northrise',
         addressLocality: 'Ndola',
-        addressRegion: 'Copperbelt Province',
+        addressRegion: 'Copperbelt',
         addressCountry: 'ZM',
     },
     geo: {

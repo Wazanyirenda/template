@@ -1,39 +1,36 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { SolutionCard } from './SolutionCard';
 
 const solutions = [
   {
-    title: 'OUR CORE SERVICE',
-    subtitle: 'Cross-Border Cargo Transportation',
-    description: 'We handle commercial cargo that needs to cross borders. Whether you are moving goods from Zambia to Tanzania, from South Africa to Malawi, or any corridor within our network — we coordinate the full journey: scheduled pickup, route planning, border documentation alignment, and confirmed delivery.',
+    title: 'CORE SERVICE',
+    subtitle: 'Road Freight for Business Cargo',
+    description: 'We transport bulk and general cargo by road for businesses that need dependable movement from pickup to delivery. Our team plans the route, coordinates dispatch, monitors progress, and confirms delivery.',
     features: [
-      'General commercial goods',
-      'Industrial and manufacturing supplies',
-      'Agricultural products and commodities',
-      'Construction materials',
-      'Packaged and palletized freight',
-      'Wholesale and distribution cargo',
+      'Long distance haulage',
+      'Local distribution',
+      'Contract transport services',
+      'Cross-border transportation',
+      'Bulk and general cargo transport',
+      'Mining, agriculture, construction, and trade cargo',
     ],
     learnMoreLink: '/services',
-    imageSrc: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1200',
-    imageAlt: 'Cross-border cargo transport truck',
+    imageSrc: '/images/truck1.jpg',
+    imageAlt: 'Road freight truck',
     reverse: false,
   },
   {
-    title: 'OUR ROUTE NETWORK',
-    subtitle: 'Seven Countries. Both Directions.',
-    description: 'We operate established trade corridors connecting seven countries across Southern and Eastern Africa. Every shipment is planned against route conditions, border crossing requirements, and your delivery window — so cargo arrives on time, without surprises.',
+    title: 'REGIONAL COVERAGE',
+    subtitle: 'Zambia and Regional Routes',
+    description: 'We serve domestic routes in Zambia and cross-border routes across the SADC region, including Zimbabwe, Tanzania, Botswana, Malawi, South Africa, Mozambique, Angola, and Namibia.',
     features: [
-      'Zambia · Tanzania · Malawi',
-      'Kenya · Uganda · Rwanda · South Africa',
-      'Import and export in both directions',
-      'Additional corridors available on request',
+      'Zambia domestic routes',
+      'Zimbabwe and Tanzania cross-border routes',
+      'Botswana, Malawi, South Africa, and Mozambique',
+      'Angola and Namibia coverage',
     ],
     learnMoreLink: '/coverage',
-    imageSrc: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&q=80&w=1200',
-    imageAlt: 'African trade route corridors',
+    imageSrc: '/images/truck2.jpg',
+    imageAlt: 'Regional road freight corridors',
     reverse: true,
   },
 ];

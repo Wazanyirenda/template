@@ -12,7 +12,7 @@ const formatDate = (dateStr: string) => {
   return new Date(dateStr).toLocaleDateString('en-ZM', { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
-const BASE_URL = 'https://calmmt.co.zm';
+const BASE_URL = 'https://www.calmmountaintransport.com';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();

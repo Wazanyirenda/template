@@ -1,27 +1,26 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { MapTrifold, Globe, ChatCircle, Handshake } from 'phosphor-react';
+import { MapTrifold, ChatCircle, Handshake, ShieldCheck } from 'phosphor-react';
 
 const reasons = [
   {
-    title: "Scheduled & Structured",
-    description: "We plan every shipment before it moves — route, timing, border requirements, and delivery. Nothing is left to chance.",
+    title: "Disciplined Planning",
+    description: "We plan dispatches, routes, fuel control, driver monitoring, delivery confirmation, and maintenance tracking so operations stay predictable.",
     icon: MapTrifold
   },
   {
-    title: "Regional Experience",
-    description: "We know Southern and Eastern Africa. We understand border crossing realities, route conditions, and what it takes to keep cargo moving reliably.",
-    icon: Globe
-  },
-  {
-    title: "Consistent Communication",
-    description: "You will know the status of your cargo. We keep clients informed at key stages — from dispatch through to delivery confirmation.",
+    title: "Clear Communication",
+    description: "We maintain honest timelines, clear pricing, and regular shipment updates so clients always know where their cargo stands.",
     icon: ChatCircle
   },
   {
-    title: "Built for Business",
-    description: "We work with companies that need regular, dependable transport — not one-off trips. If you move cargo frequently, we are the right partner.",
+    title: "Safe Execution",
+    description: "We prioritize cargo integrity and responsible transport practices at every stage, from collection through final delivery.",
+    icon: ShieldCheck
+  },
+  {
+    title: "Client Commitment",
+    description: "Satisfying customers is key to our success. We build long-term relationships through reliable and predictable logistics support.",
     icon: Handshake
   }
 ];

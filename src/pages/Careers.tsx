@@ -69,7 +69,7 @@ const Careers = () => {
         {/* ── HERO ── */}
         <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
           <motion.img
-            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2070"
+            src="/images/IMG-20260428-WA0010.jpg"
             alt="Careers at Calm Mountain Transport"
             className="w-full h-full object-cover opacity-40"
             initial={{ scale: 1.06 }}
@@ -297,7 +297,7 @@ const Careers = () => {
                 transition={{ duration: 0.8, delay: 0.15 }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=900"
+                  src="/images/IMG-20260428-WA0016.jpg"
                   alt="Careers"
                   className="w-full h-full object-cover opacity-20"
                 />

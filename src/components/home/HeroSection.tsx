@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 export const HeroSection = () => {
   return (
     <section className="relative h-screen w-full min-w-0 overflow-hidden bg-black">
-      {/* Blank placeholder — replace with your own image */}
-      <div className="absolute inset-0 w-full h-full bg-neutral-900" />
+      <img
+        src="/images/truck4.jpg"
+        alt="Calm Mountain Transport road freight truck"
+        className="absolute inset-0 w-full h-full object-cover opacity-55"
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
 
       <div className="container mx-auto px-4 md:px-8 h-full relative z-10 flex items-center pt-20 lg:pt-24">
@@ -16,7 +19,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-primary text-sm font-bold uppercase tracking-widest mb-5"
           >
-            Calm Mountain Transport Limited
+            Road Freight and Logistics
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -24,15 +27,23 @@ export const HeroSection = () => {
             transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-6 leading-tight tracking-tight max-w-4xl"
           >
-            We Transport Commercial Cargo Across Southern and Eastern Africa
+            Reliable Cargo Transport Across Zambia and the SADC Region
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-10 max-w-3xl"
+            className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-5 max-w-3xl"
           >
-            We move goods between Zambia, Tanzania, Malawi, Kenya, Uganda, Rwanda, and South Africa. Commercial cargo, scheduled departures, coordinated delivery — end to end.
+            We move commercial cargo for businesses that need safe, timely, and well-coordinated road transport.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.28, ease: "easeOut" }}
+            className="text-sm md:text-base text-white/70 font-light leading-relaxed mb-10 max-w-3xl"
+          >
+            From long-distance haulage to local distribution and cross-border routes, Calm Mountain Transport plans every shipment clearly and keeps your cargo moving with confidence.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

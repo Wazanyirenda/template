@@ -49,7 +49,7 @@ const Blog = () => {
       <Header />
       <main className="flex-1">
         <section className="relative h-[50vh] min-h-[360px] bg-black overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2070" alt="" className="w-full h-full object-cover opacity-40" />
+          <img src="/images/IMG-20260428-WA0016.jpg" alt="" className="w-full h-full object-cover opacity-40" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
           <div className="absolute inset-0 flex items-center pt-20 lg:pt-24">
             <div className="container mx-auto px-4 md:px-8">
@@ -88,7 +88,7 @@ const Blog = () => {
                   <motion.article key={post.id} initial={{ opacity: 0, y: 24 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: i * 0.06 }} className="bg-white group overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
                     <Link to={getPostUrl(post)} className="block">
                       <div className="h-56 overflow-hidden relative">
-                        <img src={post.image_url || 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800'} alt={post.title} className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                        <img src={post.image_url || '/images/truck1.jpg'} alt={post.title} className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
                         <div className="absolute top-4 left-4">
                           <span className="px-3 py-1.5 bg-primary text-black text-[10px] font-heading font-bold uppercase tracking-widest">{post.category}</span>
                         </div>

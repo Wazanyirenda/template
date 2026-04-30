@@ -11,6 +11,7 @@ import {
 } from 'phosphor-react';
 import { supabase, CareerItem, FleetItem, PageView, NewsItem } from '@/lib/supabase';
 import { toast } from 'sonner';
+import type { Session } from '@supabase/supabase-js';
 
 type Tab = 'dashboard' | 'fleet' | 'careers' | 'blog';
 
@@ -363,19 +364,34 @@ const NewsForm = ({
 };
 
 // ── LOGIN FORM ───────────────────────────────────────────────
-const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
+const LoginForm = ({ onLogin }: { onLogin: (session: Session) => void }) => {
+    const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (pass === 'admin123') {
-            localStorage.setItem('cm_admin_auth', 'true');
-            onLogin();
-        } else {
+        if (!email || !pass) {
             setError(true);
-            toast.error('Invalid password');
+            toast.error('Enter your dashboard email and password.');
+            return;
         }
+
+        setLoading(true);
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password: pass,
+        });
+        setLoading(false);
+
+        if (error || !data.session) {
+            setError(true);
+            toast.error(error?.message || 'Invalid dashboard credentials.');
+            return;
+        }
+
+        onLogin(data.session);
     };
 
     return (
@@ -390,11 +406,22 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
                         <img src="/logo.png" alt="CM Transport Logo" className="w-full h-auto object-contain" />
                     </div>
                     <div>
-                        <p className="text-black font-heading font-bold text-base uppercase tracking-wide">Admin Portal</p>
+                        <p className="text-black font-heading font-bold text-base uppercase tracking-wide">Dashboard</p>
                         <p className="text-gray-400 text-[10px] uppercase tracking-widest font-heading">Secure Access Required</p>
                     </div>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-[10px] font-heading font-bold uppercase tracking-wider text-gray-500 mb-2">Email</label>
+                        <input
+                            type="email"
+                            className={`w-full px-4 py-3 bg-gray-50 border ${error ? 'border-red-500' : 'border-gray-200'} text-black focus:outline-none focus:border-black transition-colors`}
+                            value={email}
+                            onChange={e => { setEmail(e.target.value); setError(false); }}
+                            placeholder="dashboard@example.com"
+                            autoFocus
+                        />
+                    </div>
                     <div>
                         <label className="block text-[10px] font-heading font-bold uppercase tracking-wider text-gray-500 mb-2">Password</label>
                         <input
@@ -406,8 +433,8 @@ const LoginForm = ({ onLogin }: { onLogin: () => void }) => {
                             autoFocus
                         />
                     </div>
-                    <button type="submit" className="w-full py-4 bg-black text-white font-heading font-bold text-xs uppercase tracking-[0.2em] hover:bg-secondary transition-all">
-                        Login to Dashboard
+                    <button type="submit" disabled={loading} className="w-full py-4 bg-black text-white font-heading font-bold text-xs uppercase tracking-[0.2em] hover:bg-secondary transition-all disabled:opacity-50">
+                        {loading ? 'Signing In...' : 'Login to Dashboard'}
                     </button>
                 </form>
                 <p className="mt-8 text-center">
@@ -463,6 +490,7 @@ const StatCard = ({ label, value, sub, icon: Icon, trend }: {
 // ── MAIN ADMIN PAGE ──────────────────────────────────────────
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [session, setSession] = useState<Session | null>(null);
     const [tab, setTab] = useState<Tab>('dashboard');
     const [fleet, setFleet] = useState<FleetItem[]>([]);
     const [careers, setCareers] = useState<CareerItem[]>([]);
@@ -510,11 +538,24 @@ const Admin = () => {
     };
 
     useEffect(() => {
-        if (localStorage.getItem('cm_admin_auth') === 'true') setIsAuthenticated(true);
-        fetchAll();
+        supabase.auth.getSession().then(({ data }) => {
+            setSession(data.session);
+            setIsAuthenticated(Boolean(data.session));
+            if (data.session) fetchAll();
+            else setLoading(false);
+        });
+
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+            setSession(nextSession);
+            setIsAuthenticated(Boolean(nextSession));
+            if (nextSession) fetchAll();
+            else setLoading(false);
+        });
+
+        return () => listener.subscription.unsubscribe();
     }, []);
 
-    if (!isAuthenticated) return <LoginForm onLogin={() => setIsAuthenticated(true)} />;
+    if (!isAuthenticated) return <LoginForm onLogin={(nextSession) => { setSession(nextSession); setIsAuthenticated(true); fetchAll(); }} />;
 
     // ── FLEET CRUD ──
     const saveFleet = async (data: Partial<FleetItem>) => {
@@ -698,8 +739,17 @@ const Admin = () => {
                     <Link to="/" className="flex items-center gap-1 md:gap-2 text-white/50 hover:text-white text-[10px] font-heading uppercase tracking-wider transition-colors shrink-0 ml-auto md:ml-0">
                         <ArrowLeft size={12} /> View Site
                     </Link>
+                    {session?.user?.email && (
+                        <span className="hidden lg:inline text-white/30 text-[10px] font-heading uppercase tracking-wider shrink-0">
+                            {session.user.email}
+                        </span>
+                    )}
                     <button
-                        onClick={() => { localStorage.removeItem('cm_admin_auth'); setIsAuthenticated(false); }}
+                        onClick={async () => {
+                            await supabase.auth.signOut();
+                            setSession(null);
+                            setIsAuthenticated(false);
+                        }}
                         className="text-white/30 hover:text-red-400 text-[10px] font-heading uppercase tracking-wider transition-colors shrink-0"
                     >
                         Logout

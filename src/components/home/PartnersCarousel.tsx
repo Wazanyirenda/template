@@ -3,14 +3,14 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const partners = [
-  { name: 'Import & Export' },
-  { name: 'Manufacturing' },
-  { name: 'Distribution' },
-  { name: 'Agriculture' },
-  { name: 'Construction' },
-  { name: 'Wholesale' },
-  { name: 'Retail Supply' },
-  { name: 'Infrastructure' },
+  { name: 'Mining Companies' },
+  { name: 'Agricultural Suppliers' },
+  { name: 'Farmers' },
+  { name: 'Construction Companies' },
+  { name: 'Retail Distributors' },
+  { name: 'Wholesale Distributors' },
+  { name: 'Importers' },
+  { name: 'Exporters' },
 ];
 
 export const PartnersCarousel = () => {

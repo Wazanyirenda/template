@@ -1,27 +1,19 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapTrifold, ArrowFatRight } from 'phosphor-react';
 
 const routes = [
-  { from: "Zambia", to: "Tanzania" },
-  { from: "Zambia", to: "Malawi" },
-  { from: "Zambia", to: "South Africa" },
-  { from: "Zambia", to: "Kenya" },
-  { from: "Zambia", to: "Uganda" },
-  { from: "Zambia", to: "Rwanda" },
-  { from: "Tanzania", to: "Zambia" },
-  { from: "Malawi", to: "Zambia" },
-  { from: "South Africa", to: "Zambia" },
-  { from: "Kenya", to: "Zambia" },
-  { from: "Zambia", to: "DRC" },
-  { from: "Zambia", to: "Zimbabwe" },
+  { from: "Lusaka", to: "Ndola", type: "Domestic route" },
+  { from: "Lusaka", to: "Kitwe", type: "Domestic route" },
+  { from: "Lusaka", to: "Livingstone", type: "Domestic route" },
+  { from: "Zambia", to: "Zimbabwe", type: "Cross-border route" },
+  { from: "Zambia", to: "Tanzania", type: "Cross-border route" },
 ];
 
-const countries = ["Zambia", "Tanzania", "Malawi", "Kenya", "Uganda", "Rwanda", "South Africa"];
+const countries = ["Zambia", "Zimbabwe", "Tanzania", "Botswana", "Malawi", "South Africa", "Mozambique", "Angola", "Namibia"];
 
 const useSectionInView = () => {
   const ref = useRef(null);
@@ -42,14 +34,14 @@ const RouteNetworkSection = () => {
         >
           <p className="text-zinc-500 font-heading font-bold text-xs uppercase tracking-[0.3em] mb-4">Network</p>
           <h2 className="text-3xl md:text-4xl font-bold font-heading text-black uppercase leading-tight">
-            Regional Network
+            Key Routes
           </h2>
           <div className="w-14 h-0.5 bg-primary mt-6 mb-6" />
           <p className="text-gray-500 text-sm max-w-2xl leading-relaxed font-body">
-            Calm Mountain Transport Limited operates along key trade routes linking Southern and Eastern Africa. We facilitate cargo movement across borders between the following countries.
+            Calm Mountain Transport provides domestic and cross-border transport services across Zambia and the wider SADC region, with active focus on major Copperbelt, southern corridor, Zimbabwe, and Tanzania routes.
           </p>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {routes.map((route, i) => (
             <motion.div
               key={`${route.from}-${route.to}`}
@@ -66,12 +58,12 @@ const RouteNetworkSection = () => {
                 <ArrowFatRight className="w-3 h-3 text-primary shrink-0" weight="fill" />
                 <span className="font-bold text-secondary text-sm uppercase">{route.to}</span>
               </div>
-              <p className="text-muted-foreground text-xs mt-2 font-body">Cross-border corridor</p>
+              <p className="text-muted-foreground text-xs mt-2 font-body">{route.type}</p>
             </motion.div>
           ))}
         </div>
         <p className="text-gray-500 text-sm leading-relaxed mt-10 max-w-2xl font-body">
-          Additional route combinations can be arranged based on cargo demand. Our network supports regional trade and business continuity across land-linked economies.
+          Additional route combinations can be arranged based on cargo demand, documentation requirements, and operational availability.
         </p>
       </div>
     </section>
@@ -88,16 +80,16 @@ const BorderExpertiseSection = () => {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7 }}
       >
-        <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Expertise</p>
+        <p className="text-primary font-heading font-bold text-xs uppercase tracking-[0.3em] mb-5">Coverage</p>
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-white uppercase leading-tight mb-4">
-          Border Crossing<br />Expertise
+          Domestic and<br />SADC Transport
         </h2>
         <div className="w-12 h-0.5 bg-primary mb-8" />
         <p className="text-white/60 text-sm font-body leading-relaxed mb-4">
-          Cross-border cargo involves more than just driving. It requires documentation, timing, and awareness of each border crossing's conditions and requirements.
+          We cover Zambia, Zimbabwe, Tanzania, Botswana, Malawi, South Africa, Mozambique, Angola, and Namibia.
         </p>
         <p className="text-white/60 text-sm font-body leading-relaxed">
-          We manage this as part of every job — so your cargo does not sit at a border when it should be at its destination. Our experience on these corridors means we anticipate issues before they become delays.
+          Cross-border cargo movement is coordinated through routing, proper documentation, and structured execution to minimise delays at border points.
         </p>
       </motion.div>
       <motion.div
@@ -107,8 +99,8 @@ const BorderExpertiseSection = () => {
         transition={{ duration: 0.8, delay: 0.15 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1200"
-          alt="Border crossing expertise"
+          src="/images/truck2.jpg"
+          alt="Regional road freight route"
           className="w-full h-full object-cover grayscale-[30%] hover:grayscale-0 transition-all duration-700"
         />
       </motion.div>
@@ -147,7 +139,7 @@ const CoverageCTA = () => {
         transition={{ duration: 0.8, delay: 0.15 }}
       >
         <img
-          src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&q=80&w=900"
+          src="/images/truck3.jpg"
           alt="Routes"
           className="w-full h-full object-cover opacity-25"
         />
@@ -164,10 +156,9 @@ const Coverage = () => {
     <div className="min-h-screen flex flex-col min-w-0 overflow-x-clip">
       <Header />
       <main className="flex-1">
-        {/* HERO */}
         <section className="relative h-[70vh] min-h-[480px] bg-black overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&q=80&w=2070"
+            src="/images/hero-home2.jpg"
             alt="African routes and trade corridors"
             className="w-full h-full object-cover opacity-35"
           />
@@ -183,14 +174,13 @@ const Coverage = () => {
                 </h1>
                 <div className="w-16 h-0.5 bg-primary mb-6" />
                 <p className="text-lg text-white/70 max-w-xl font-light leading-relaxed">
-                  Seven countries. Established trade corridors. Cargo moving in both directions across Southern and Eastern Africa.
+                  Domestic and cross-border transport services covering Zambia and key SADC markets.
                 </p>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Countries stat strip */}
         <section className="bg-black">
           <div className="container mx-auto px-4 md:px-8">
             <div className="py-10 flex flex-wrap gap-0 divide-x divide-white/10">
@@ -202,7 +192,7 @@ const Coverage = () => {
                   transition={{ delay: i * 0.07, duration: 0.4 }}
                   className="px-6 py-4 text-center flex-1 min-w-[100px]"
                 >
-                  <p className="text-white/30 font-heading text-[10px] uppercase tracking-[0.25em] mb-1">{i === 0 ? "Hub" : "Corridor"}</p>
+                  <p className="text-white/30 font-heading text-[10px] uppercase tracking-[0.25em] mb-1">{i === 0 ? "Hub" : "Coverage"}</p>
                   <p className="text-white font-heading font-bold text-sm uppercase tracking-wide">{country}</p>
                 </motion.div>
               ))}

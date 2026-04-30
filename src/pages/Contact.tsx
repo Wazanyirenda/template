@@ -97,7 +97,7 @@ const Contact = () => {
         {/* HERO */}
         <section ref={heroRef} className="relative h-[50vh] min-h-[360px] bg-black overflow-hidden">
           <motion.img
-            src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop"
+            src="/images/IMG-20260428-WA0055.jpg"
             alt="Contact Us"
             className="w-full h-full object-cover opacity-45"
             initial={{ scale: 1.06 }}
@@ -167,20 +167,20 @@ const Contact = () => {
                 >
                   <h3 className="text-sm font-bold font-heading text-white mb-6 flex items-center gap-3 uppercase tracking-wide">
                     <Buildings className="w-4 h-4 text-primary shrink-0" weight="fill" />
-                    Calm Mountain Transport Limited
+                    Head Office - Ndola
                       </h3>
                   <div className="space-y-4 text-white/60 pl-7 text-sm font-body">
                         <p className="flex items-start gap-3">
                       <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" weight="fill" />
-                      <span>Ndola, Copperbelt Province<br />Zambia</span>
+                      <span>No. 7 Chinika Road, Northrise<br />Ndola, Copperbelt, Zambia</span>
                         </p>
                         <p className="flex items-center gap-3">
                       <Phone className="w-4 h-4 text-primary shrink-0" weight="fill" />
-                      <span>+260 — (to be updated)</span>
+                      <span>+260 761 370 582</span>
                         </p>
                         <p className="flex items-center gap-3">
                       <Envelope className="w-4 h-4 text-primary shrink-0" weight="fill" />
-                      <span>info@calmmt.co.zm</span>
+                      <span>info@calmmountaintransport.com</span>
                         </p>
                       </div>
                 </motion.div>
@@ -405,3 +405,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

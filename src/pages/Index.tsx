@@ -5,8 +5,7 @@ import { SmartSolutionsSection } from '@/components/home/SmartSolutionsSection';
 import { SolutionsSection } from '@/components/home/SolutionsSection';
 import { NewsSection } from '@/components/home/NewsSection';
 import { ConsultationCTA } from '@/components/home/ConsultationCTA';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const IntroductionSection = () => {
@@ -35,10 +34,10 @@ const IntroductionSection = () => {
             transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
           >
             <p className="text-foreground font-heading font-bold text-2xl sm:text-3xl md:text-4xl uppercase leading-tight max-w-2xl mb-6">
-              Cross-Border Cargo Transport Across Seven Countries.
+              Move your cargo with a transport partner that plans, communicates, and delivers.
             </p>
             <p className="text-muted-foreground text-sm leading-relaxed font-body max-w-xl">
-              We move commercial goods between seven countries in Southern and Eastern Africa — providing businesses with structured, reliable, and professionally coordinated transport from pickup to delivery. One service. Done properly.
+              Calm Mountain Transport provides road freight, haulage, local distribution, contract transport, and cross-border cargo movement. We help businesses move goods safely and on schedule across Zambia and regional routes.
             </p>
           </motion.div>
         </div>
