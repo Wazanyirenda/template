@@ -19,7 +19,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-primary text-sm font-bold uppercase tracking-widest mb-5"
           >
-            Road Freight and Logistics
+            Zambian Road Freight and Logistics
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -27,7 +27,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-6 leading-tight tracking-tight max-w-4xl"
           >
-            Reliable Cargo Transport Across Zambia and the SADC Region
+            Haulage, Distribution, and Cross-Border Cargo Transport
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -35,15 +35,7 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-5 max-w-3xl"
           >
-            We move commercial cargo for businesses that need safe, timely, and well-coordinated road transport.
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.28, ease: "easeOut" }}
-            className="text-sm md:text-base text-white/70 font-light leading-relaxed mb-10 max-w-3xl"
-          >
-            From long-distance haulage to local distribution and cross-border routes, Calm Mountain Transport plans every shipment clearly and keeps your cargo moving with confidence.
+            Calm Mountain Transport moves bulk and general cargo for businesses across Zambia and SADC routes through planned road freight, local distribution, contract transport, and coordinated delivery.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
