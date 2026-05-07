@@ -91,6 +91,17 @@ export const Footer = () => {
           <p>
             Registered in the Republic of Zambia under the Companies Act, 2017. Regulator: Road Transport and Safety Agency (RTSA).
           </p>
+          <p className="mt-3">
+            Created by{' '}
+            <a
+              href="https://wazama.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Wazama
+            </a>
+          </p>
         </div>
       </div>
     </motion.footer>
