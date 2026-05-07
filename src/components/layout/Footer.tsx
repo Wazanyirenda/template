@@ -97,7 +97,7 @@ export const Footer = () => {
               href="https://wazama.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="font-semibold text-primary underline underline-offset-4 decoration-primary/60 transition-colors hover:text-white hover:decoration-white"
             >
               Wazama
             </a>
